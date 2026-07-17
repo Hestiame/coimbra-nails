@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coimbra Nails — Nail Atelier</title>
+<meta name="description" content="Coimbra Nails — onde cada detalhe é uma obra de arte. Alongamento, nail art e cuidados premium para suas unhas.">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ============================================================
+   0. DESIGN TOKENS
+   ============================================================ */
+:root{
+  --ivory:#FBF8F4;
+  --ivory-deep:#F4EEE6;
+  --blush:#F3E1DD;
+  --blush-deep:#E9CFC8;
+  --rose-gold:#C68E85;
+  --rose-gold-deep:#B07268;
+  --gold:#C9A961;
+  --gold-light:#E7D4A0;
+  --charcoal:#2A2320;
+  --taupe:#8A7B6C;
+  --taupe-light:#B7AA9C;
+  --white:#ffffff;
+
+  --font-display:'Playfair Display', serif;
+  --font-body:'Poppins', sans-serif;
+
+  --radius-lg:32px;
+  --radius-md:20px;
+  --radius-sm:12px;
+
+  --shadow-soft:0 20px 60px -20px rgba(42,35,32,0.18);
+  --shadow-tiny:0 8px 24px -8px rgba(42,35,32,0.14);
+
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:var(--font-body);
+  background:var(--ivory);
+  color:var(--charcoal);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+img{ max-width:100%; display:block; }
+a{ text-decoration:none; color:inherit; }
+ul{ list-style:none; }
+button{ font-family:inherit; border:none; background:none; cursor:none; }
+
+::selection{ background:var(--gold-light); color:var(--charcoal); }
+
+.container{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 6vw;
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-body);
+  font-size:.72rem;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--rose-gold-deep);
+  font-weight:600;
+  margin-bottom:18px;
+}
+.eyebrow::before{
+  content:'';
+  width:28px; height:1px;
+  background:var(--gold);
+}
+
+.section-title{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(2.1rem, 4vw, 3.4rem);
+  line-height:1.15;
+  letter-spacing:-.01em;
+  color:var(--charcoal);
+}
+.section-title em{
+  font-style:italic;
+  font-weight:500;
+  color:var(--rose-gold-deep);
+}
+.section-sub{
+  font-family:var(--font-body);
+  font-size:1rem;
+  color:var(--taupe);
+  font-weight:300;
+  max-width:520px;
+  margin-top:16px;
+  line-height:1.75;
+}
+.section-head{
+  text-align:center;
+  margin:0 auto 64px;
+  max-width:640px;
+}
+.section-head .section-sub{ margin-left:auto; margin-right:auto; }
+
+section{ position:relative; }
+
+/* ============================================================
+   1. CUSTOM CURSOR
+   ============================================================ */
+.cursor-dot, .cursor-ring{
+  position:fixed;
+  top:0; left:0;
+  pointer-events:none;
+  border-radius:50%;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  will-change:transform;
+}
+.cursor-dot{
+  width:6px; height:6px;
+  background:var(--rose-gold-deep);
+}
+.cursor-ring{
+  width:34px; height:34px;
+  border:1px solid var(--gold);
+  opacity:.6;
+  transition:width .3s var(--ease), height .3s var(--ease), opacity .3s var(--ease), border-color .3s var(--ease);
+}
+.cursor-ring.grow{
+  width:60px; height:60px;
+  opacity:.9;
+  border-color:var(--rose-gold-deep);
+}
+@media (hover:none), (max-width:900px){
+  .cursor-dot, .cursor-ring{ display:none; }
+  body{ cursor:auto; }
+  button, a{ cursor:pointer; }
+}
+
+/* ============================================================
+   2. SCROLL REVEAL
+   ============================================================ */
+.reveal{
+  opacity:0;
+  transform:translateY(36px);
+  transition:opacity .9s var(--ease), transform .9s var(--ease);
+}
+.reveal.in{
+  opacity:1;
+  transform:translateY(0);
+}
+.reveal-scale{ opacity:0; transform:scale(.92); transition:opacity 1s var(--ease), transform 1s var(--ease); }
+.reveal-scale.in{ opacity:1; transform:scale(1); }
+
+/* ============================================================
+   3. NAVBAR
+   ============================================================ */
+.navbar{
+  position:fixed;
+  top:0; left:0; width:100%;
+  z-index:1000;
+  padding:28px 0;
+  transition:all .5s var(--ease);
+  background:transparent;
+}
+.navbar.scrolled{
+  padding:14px 0;
+  background:rgba(251,248,244,0.82);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 8px 32px -12px rgba(42,35,32,.12);
+}
+.nav-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:1.5rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  color:var(--charcoal);
+  transition:color .4s;
+}
+.logo span{ color:var(--rose-gold-deep); font-style:italic; font-weight:500; }
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:42px;
+}
+.nav-links a:not(.nav-cta){
+  font-size:.86rem;
+  font-weight:500;
+  letter-spacing:.02em;
+  color:var(--charcoal);
+  position:relative;
+  padding:4px 0;
+}
+.nav-links a:not(.nav-cta)::after{
+  content:'';
+  position:absolute;
+  left:0; bottom:-2px;
+  width:0; height:1px;
+  background:var(--rose-gold-deep);
+  transition:width .35s var(--ease);
+}
+.nav-links a:not(.nav-cta):hover::after{ width:100%; }
+
+.nav-cta{
+  background:linear-gradient(135deg, var(--rose-gold), var(--rose-gold-deep));
+  color:var(--white);
+  padding:12px 28px;
+  border-radius:100px;
+  font-size:.82rem;
+  font-weight:600;
+  letter-spacing:.03em;
+  box-shadow:0 10px 24px -8px rgba(176,114,104,.55);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.nav-cta:hover{ transform:translateY(-3px); box-shadow:0 16px 30px -8px rgba(176,114,104,.65); }
+
+.nav-toggle{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  z-index:1100;
+}
+.nav-toggle span{
+  width:26px; height:1.5px;
+  background:var(--charcoal);
+  transition:all .35s var(--ease);
+}
+.nav-toggle.active span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+.nav-toggle.active span:nth-child(2){ opacity:0; }
+.nav-toggle.active span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+
+/* ============================================================
+   4. HERO
+   ============================================================ */
+.hero{
+  height:100vh;
+  min-height:680px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg, rgba(42,35,32,.28) 0%, rgba(42,35,32,.10) 40%, rgba(251,248,244,.96) 100%),
+    url('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1800&q=80') center 30%/cover no-repeat;
+  will-change:transform;
+}
+.hero-decor{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(60px);
+  opacity:.5;
+  pointer-events:none;
+}
+.hero-decor.d1{ width:340px; height:340px; top:8%; left:-6%; background:var(--gold-light); }
+.hero-decor.d2{ width:260px; height:260px; bottom:6%; right:-4%; background:var(--rose-gold); opacity:.35;}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:760px;
+  margin:0 auto;
+  text-align:center;
+  padding:0 6vw;
+}
+.hero-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  color:var(--white);
+  font-size:.78rem;
+  letter-spacing:.36em;
+  text-transform:uppercase;
+  font-weight:500;
+  margin-bottom:26px;
+  text-shadow:0 2px 12px rgba(0,0,0,.25);
+}
+.hero-eyebrow i{ color:var(--gold-light); }
+
+.hero h1{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(2.8rem, 7vw, 5.6rem);
+  line-height:1.06;
+  color:var(--white);
+  text-shadow:0 4px 30px rgba(0,0,0,.28);
+  letter-spacing:-.01em;
+}
+.hero h1 em{
+  font-style:italic;
+  font-weight:500;
+  background:linear-gradient(120deg, var(--gold-light), var(--white) 60%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero p{
+  margin:26px auto 0;
+  max-width:480px;
+  color:rgba(255,255,255,.92);
+  font-weight:300;
+  font-size:1.08rem;
+  line-height:1.7;
+  text-shadow:0 2px 14px rgba(0,0,0,.22);
+}
+
+.hero-actions{
+  margin-top:44px;
+  display:flex;
+  gap:18px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:17px 38px;
+  border-radius:100px;
+  font-size:.9rem;
+  font-weight:600;
+  letter-spacing:.02em;
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), background .45s var(--ease);
+}
+.btn-primary{
+  background:linear-gradient(135deg, var(--rose-gold), var(--rose-gold-deep));
+  color:var(--white);
+  box-shadow:0 16px 34px -10px rgba(176,114,104,.6);
+}
+.btn-primary:hover{ transform:translateY(-4px) scale(1.02); box-shadow:0 22px 40px -10px rgba(176,114,104,.7); }
+.btn-ghost{
+  background:rgba(255,255,255,.14);
+  color:var(--white);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(10px);
+}
+.btn-ghost:hover{ background:rgba(255,255,255,.26); transform:translateY(-4px); }
+.btn-dark{
+  background:var(--charcoal);
+  color:var(--white);
+}
+.btn-dark:hover{ transform:translateY(-4px); box-shadow:0 18px 32px -12px rgba(42,35,32,.5); }
+
+.scroll-cue{
+  position:absolute;
+  bottom:34px; left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  color:var(--white);
+  font-size:.68rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  opacity:.85;
+}
+.scroll-cue .line{
+  width:1px; height:38px;
+  background:linear-gradient(var(--gold-light), transparent);
+  animation:scrollline 2.2s ease-in-out infinite;
+}
+@keyframes scrollline{
+  0%{ transform:scaleY(0); transform-origin:top; }
+  50%{ transform:scaleY(1); transform-origin:top; }
+  51%{ transform-origin:bottom; }
+  100%{ transform:scaleY(0); transform-origin:bottom; }
+}
+
+/* ============================================================
+   5. SIGNATURE DIVIDER — botanical flourish (drawn on scroll)
+   ============================================================ */
+.flourish{
+  display:flex;
+  justify-content:center;
+  padding:70px 0 20px;
+}
+.flourish svg{ width:220px; height:46px; overflow:visible; }
+.flourish path{
+  fill:none;
+  stroke:var(--gold);
+  stroke-width:1.4;
+  stroke-linecap:round;
+  stroke-dasharray:600;
+  stroke-dashoffset:600;
+  transition:stroke-dashoffset 1.6s var(--ease);
+}
+.flourish.in path{ stroke-dashoffset:0; }
+.flourish circle{
+  fill:var(--rose-gold-deep);
+  opacity:0;
+  transition:opacity .6s ease .9s;
+}
+.flourish.in circle{ opacity:1; }
+
+/* ============================================================
+   6. ABOUT
+   ============================================================ */
+.about{ padding:60px 0 130px; }
+.about-grid{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:80px;
+  align-items:center;
+}
+.about-media{ position:relative; }
+.about-media img{
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-soft);
+  width:100%;
+  aspect-ratio:4/5;
+  object-fit:cover;
+}
+.about-media .float-card{
+  position:absolute;
+  bottom:-30px; right:-30px;
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.6);
+  border-radius:var(--radius-md);
+  padding:22px 26px;
+  box-shadow:var(--shadow-soft);
+  animation:floaty 5s ease-in-out infinite;
+  max-width:210px;
+}
+@keyframes floaty{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-14px); }
+}
+.float-card .stars{ color:var(--gold); font-size:.8rem; margin-bottom:6px; }
+.float-card p{ font-size:.82rem; color:var(--taupe); line-height:1.5; }
+.float-card strong{ display:block; font-family:var(--font-display); font-size:1.05rem; color:var(--charcoal); }
+
+.about-text .section-title{ margin-bottom:22px; }
+.about-text p.lead{
+  color:var(--taupe);
+  font-size:1.02rem;
+  line-height:1.85;
+  font-weight:300;
+  margin-bottom:36px;
+}
+
+.about-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.about-card{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  padding:20px;
+  border-radius:var(--radius-sm);
+  background:var(--white);
+  box-shadow:var(--shadow-tiny);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.about-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-soft); }
+.about-card .icon{
+  width:42px; height:42px;
+  min-width:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--blush), var(--blush-deep));
+  display:flex; align-items:center; justify-content:center;
+  color:var(--rose-gold-deep);
+  font-size:.95rem;
+}
+.about-card h4{ font-size:.94rem; font-weight:600; margin-bottom:4px; }
+.about-card p{ font-size:.78rem; color:var(--taupe); line-height:1.5; }
+
+/* ============================================================
+   7. SERVICES
+   ============================================================ */
+.services{ padding:60px 0 130px; background:var(--ivory-deep); }
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:28px;
+}
+.service-card{
+  background:var(--white);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  box-shadow:var(--shadow-tiny);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+  position:relative;
+}
+.service-card:hover{
+  transform:translateY(-10px);
+  box-shadow:var(--shadow-soft);
+}
+.service-media{
+  position:relative;
+  height:190px;
+  overflow:hidden;
+}
+.service-media img{
+  width:100%; height:100%;
+  object-fit:cover;
+  transition:transform .8s var(--ease);
+}
+.service-card:hover .service-media img{ transform:scale(1.12) rotate(1deg); }
+.service-media::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 40%, rgba(42,35,32,.35));
+}
+.service-time{
+  position:absolute;
+  top:14px; right:14px;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(8px);
+  color:var(--charcoal);
+  font-size:.7rem;
+  font-weight:600;
+  padding:6px 12px;
+  border-radius:100px;
+  z-index:2;
+  display:flex; align-items:center; gap:6px;
+}
+.service-body{ padding:22px 22px 26px; }
+.service-body h3{
+  font-family:var(--font-display);
+  font-size:1.28rem;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.service-body p{
+  font-size:.82rem;
+  color:var(--taupe);
+  line-height:1.6;
+  min-height:58px;
+}
+.service-foot{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-top:1px dashed var(--taupe-light);
+  padding-top:14px;
+}
+.service-price{
+  font-family:var(--font-display);
+  font-size:1.2rem;
+  font-weight:700;
+  color:var(--rose-gold-deep);
+}
+.service-price span{ font-size:.7rem; color:var(--taupe); font-family:var(--font-body); font-weight:400; }
+.service-link{
+  width:36px; height:36px;
+  border-radius:50%;
+  background:var(--blush);
+  color:var(--rose-gold-deep);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .35s, color .35s, transform .35s;
+}
+.service-card:hover .service-link{
+  background:var(--rose-gold-deep);
+  color:var(--white);
+  transform:rotate(45deg);
+}
+
+/* ============================================================
+   8. GALLERY (masonry / pinterest)
+   ============================================================ */
+.gallery{ padding:60px 0 130px; }
+.masonry{
+  column-count:4;
+  column-gap:20px;
+}
+.masonry-item{
+  break-inside:avoid;
+  margin-bottom:20px;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  position:relative;
+  cursor:none;
+}
+.masonry-item img{
+  width:100%;
+  display:block;
+  transition:transform .7s var(--ease);
+}
+.masonry-item:hover img{ transform:scale(1.07); }
+.masonry-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(42,35,32,0) 45%, rgba(42,35,32,.68));
+  display:flex; align-items:flex-end;
+  padding:18px;
+  opacity:0;
+  transition:opacity .45s var(--ease);
+}
+.masonry-item:hover .masonry-overlay{ opacity:1; }
+.masonry-overlay span{
+  color:var(--white);
+  font-size:.82rem;
+  font-weight:500;
+  display:flex; align-items:center; gap:8px;
+}
+
+/* Modal / Lightbox */
+.lightbox{
+  position:fixed; inset:0;
+  background:rgba(23,18,16,.92);
+  backdrop-filter:blur(6px);
+  z-index:3000;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden;
+  transition:opacity .4s var(--ease), visibility .4s;
+  padding:5vw;
+}
+.lightbox.active{ opacity:1; visibility:visible; }
+.lightbox img{
+  max-width:min(880px, 90vw);
+  max-height:86vh;
+  border-radius:var(--radius-md);
+  box-shadow:0 40px 100px -20px rgba(0,0,0,.6);
+  transform:scale(.9);
+  transition:transform .45s var(--ease);
+}
+.lightbox.active img{ transform:scale(1); }
+.lightbox-close{
+  position:absolute;
+  top:32px; right:5vw;
+  width:48px; height:48px;
+  border-radius:50%;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.3);
+  color:var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+  transition:background .3s, transform .3s;
+}
+.lightbox-close:hover{ background:rgba(255,255,255,.22); transform:rotate(90deg); }
+
+/* ============================================================
+   9. STYLES (choose your style)
+   ============================================================ */
+.styles{ padding:60px 0 130px; background:var(--ivory-deep); }
+.style-grid{
+  display:grid;
+  grid-template-columns:repeat(7, 1fr);
+  gap:18px;
+}
+.style-card{
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:3/4.2;
+  box-shadow:var(--shadow-tiny);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.style-card:hover{ transform:translateY(-8px); box-shadow:var(--shadow-soft); }
+.style-card img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .8s var(--ease), filter .5s;
+}
+.style-card:hover img{ transform:scale(1.1); }
+.style-card::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(42,35,32,0) 30%, rgba(42,35,32,.72));
+}
+.style-name{
+  position:absolute;
+  bottom:16px; left:0; right:0;
+  text-align:center;
+  color:var(--white);
+  font-family:var(--font-display);
+  font-size:.98rem;
+  font-weight:600;
+  z-index:2;
+  letter-spacing:.02em;
+}
+
+/* ============================================================
+   10. HOW IT WORKS — timeline
+   ============================================================ */
+.process{ padding:60px 0 140px; }
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  position:relative;
+  margin-top:20px;
+}
+.timeline::before{
+  content:'';
+  position:absolute;
+  top:34px; left:12.5%; right:12.5%;
+  height:1px;
+  background:repeating-linear-gradient(90deg, var(--gold) 0 8px, transparent 8px 16px);
+}
+.tl-step{
+  text-align:center;
+  padding:0 20px;
+  position:relative;
+}
+.tl-num{
+  width:68px; height:68px;
+  border-radius:50%;
+  background:var(--white);
+  border:1px solid var(--blush-deep);
+  color:var(--rose-gold-deep);
+  font-family:var(--font-display);
+  font-size:1.4rem;
+  font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 26px;
+  position:relative;
+  z-index:2;
+  box-shadow:var(--shadow-tiny);
+  transition:transform .5s var(--ease), background .5s var(--ease), color .5s var(--ease);
+}
+.tl-step:hover .tl-num{
+  background:linear-gradient(135deg, var(--rose-gold), var(--rose-gold-deep));
+  color:var(--white);
+  transform:scale(1.12);
+}
+.tl-step h4{ font-family:var(--font-display); font-size:1.15rem; font-weight:600; margin-bottom:10px; }
+.tl-step p{ font-size:.84rem; color:var(--taupe); line-height:1.6; max-width:220px; margin:0 auto; }
+
+/* ============================================================
+   11. TESTIMONIALS — carousel
+   ============================================================ */
+.testimonials{
+  padding:80px 0 130px;
+  background:linear-gradient(160deg, var(--blush) 0%, var(--ivory) 55%);
+  position:relative;
+  overflow:hidden;
+}
+.carousel{
+  position:relative;
+  max-width:760px;
+  margin:0 auto;
+  min-height:290px;
+}
+.t-card{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-soft);
+  padding:48px 56px;
+  text-align:center;
+  opacity:0;
+  transform:translateX(30px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+  pointer-events:none;
+}
+.t-card.active{
+  opacity:1;
+  transform:translateX(0);
+  pointer-events:auto;
+}
+.t-card img{
+  width:74px; height:74px;
+  border-radius:50%;
+  object-fit:cover;
+  margin:0 auto 18px;
+  border:3px solid var(--white);
+  box-shadow:var(--shadow-tiny);
+}
+.t-stars{ color:var(--gold); margin-bottom:16px; font-size:.9rem; letter-spacing:2px; }
+.t-card p.quote{
+  font-family:var(--font-display);
+  font-style:italic;
+  font-size:1.18rem;
+  line-height:1.7;
+  color:var(--charcoal);
+  margin-bottom:20px;
+}
+.t-card .name{ font-weight:600; font-size:.92rem; }
+.t-card .role{ font-size:.76rem; color:var(--taupe); }
+
+.carousel-dots{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:36px;
+}
+.carousel-dots button{
+  width:9px; height:9px;
+  border-radius:50%;
+  background:var(--taupe-light);
+  transition:all .35s var(--ease);
+}
+.carousel-dots button.active{
+  width:26px;
+  border-radius:6px;
+  background:var(--rose-gold-deep);
+}
+
+/* ============================================================
+   12. STATS
+   ============================================================ */
+.stats{ padding:100px 0; background:var(--charcoal); position:relative; overflow:hidden; }
+.stats::before{
+  content:'';
+  position:absolute; top:-30%; right:-10%;
+  width:480px; height:480px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(201,169,97,.18), transparent 70%);
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  position:relative;
+  z-index:2;
+}
+.stat{ text-align:center; }
+.stat .num{
+  font-family:var(--font-display);
+  font-size:clamp(2.2rem,4vw,3.2rem);
+  font-weight:700;
+  color:var(--gold-light);
+  display:flex; align-items:baseline; justify-content:center; gap:2px;
+}
+.stat .label{
+  margin-top:10px;
+  color:rgba(255,255,255,.72);
+  font-size:.82rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+/* ============================================================
+   13. FAQ
+   ============================================================ */
+.faq{ padding:60px 0 140px; }
+.faq-wrap{ max-width:800px; margin:0 auto; }
+.faq-item{
+  border-bottom:1px solid var(--blush-deep);
+  padding:26px 0;
+}
+.faq-q{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px;
+  font-family:var(--font-display);
+  font-size:1.08rem;
+  font-weight:600;
+  cursor:none;
+}
+.faq-q i{
+  color:var(--rose-gold-deep);
+  transition:transform .4s var(--ease);
+  min-width:20px;
+}
+.faq-item.open .faq-q i{ transform:rotate(135deg); }
+.faq-a{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .5s var(--ease), padding .5s var(--ease);
+}
+.faq-item.open .faq-a{ max-height:200px; padding-top:16px; }
+.faq-a p{ color:var(--taupe); font-size:.9rem; line-height:1.75; max-width:640px; }
+
+/* ============================================================
+   14. INSTAGRAM
+   ============================================================ */
+.instagram{ padding:20px 0 130px; }
+.insta-grid{
+  display:grid;
+  grid-template-columns:repeat(6, 1fr);
+  gap:12px;
+}
+.insta-item{
+  position:relative;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  border-radius:var(--radius-sm);
+}
+.insta-item img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+.insta-item .ov{
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(198,142,133,.85), rgba(42,35,32,.6));
+  display:flex; align-items:center; justify-content:center;
+  color:var(--white); font-size:1.3rem;
+  opacity:0;
+  transition:opacity .4s var(--ease);
+}
+.insta-item:hover .ov{ opacity:1; }
+.insta-item:hover img{ transform:scale(1.15); }
+
+/* ============================================================
+   15. CTA
+   ============================================================ */
+.cta{
+  margin:0 6vw 120px;
+  border-radius:40px;
+  padding:100px 6vw;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(160deg, rgba(42,35,32,.72), rgba(42,35,32,.86)),
+    url('https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=1600&q=80') center/cover;
+}
+.cta::before{
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(circle at 30% 20%, rgba(201,169,97,.25), transparent 60%);
+}
+.cta-content{ position:relative; z-index:2; }
+.cta h2{
+  font-family:var(--font-display);
+  font-size:clamp(2rem, 4.4vw, 3.4rem);
+  color:var(--white);
+  font-weight:600;
+  margin-bottom:18px;
+}
+.cta h2 em{ font-style:italic; color:var(--gold-light); font-weight:500; }
+.cta p{ color:rgba(255,255,255,.82); max-width:480px; margin:0 auto 40px; font-weight:300; }
+
+/* ============================================================
+   16. FOOTER
+   ============================================================ */
+footer{
+  background:var(--charcoal);
+  color:rgba(255,255,255,.75);
+  padding:90px 0 30px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr 1.3fr;
+  gap:50px;
+  padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.footer-brand .logo{ color:var(--white); }
+.footer-brand p{
+  margin-top:18px;
+  font-size:.86rem;
+  line-height:1.75;
+  color:rgba(255,255,255,.55);
+  max-width:280px;
+}
+.footer-social{
+  display:flex; gap:12px; margin-top:24px;
+}
+.footer-social a{
+  width:40px; height:40px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .35s, transform .35s, border-color .35s;
+}
+.footer-social a:hover{
+  background:var(--rose-gold-deep);
+  border-color:var(--rose-gold-deep);
+  transform:translateY(-4px);
+}
+footer h5{
+  color:var(--white);
+  font-family:var(--font-display);
+  font-size:1rem;
+  margin-bottom:22px;
+  font-weight:600;
+}
+footer .flinks li{ margin-bottom:14px; }
+footer .flinks a{
+  font-size:.86rem;
+  color:rgba(255,255,255,.62);
+  transition:color .3s, padding-left .3s;
+}
+footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
+
+.footer-map{
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  filter:grayscale(.3) brightness(.9);
+  height:170px;
+}
+.footer-map iframe{ width:100%; height:100%; border:0; }
+.footer-contact li{
+  display:flex; gap:10px; align-items:flex-start;
+  font-size:.85rem; margin-bottom:14px; color:rgba(255,255,255,.62);
+}
+.footer-contact i{ color:var(--gold-light); margin-top:3px; }
+
+.footer-bottom{
+  padding-top:30px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:.78rem; color:rgba(255,255,255,.45);
+  flex-wrap:wrap; gap:12px;
+}
+
+/* ============================================================
+   17. BACK TO TOP
+   ============================================================ */
+.to-top{
+  position:fixed;
+  bottom:30px; right:30px;
+  width:52px; height:52px;
+  border-radius:50%;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(14px);
+  box-shadow:var(--shadow-soft);
+  color:var(--rose-gold-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.05rem;
+  z-index:900;
+  opacity:0; visibility:hidden; transform:translateY(16px);
+  transition:all .45s var(--ease);
+  border:1px solid rgba(255,255,255,.7);
+}
+.to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+.to-top:hover{ background:var(--rose-gold-deep); color:var(--white); transform:translateY(-4px); }
+
+/* ============================================================
+   18. WHATSAPP FLOAT
+   ============================================================ */
+.wa-float{
+  position:fixed;
+  bottom:30px; left:30px;
+  width:58px; height:58px;
+  border-radius:50%;
+  background:#25D366;
+  color:var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem;
+  z-index:900;
+  box-shadow:0 14px 30px -8px rgba(37,211,102,.55);
+  animation:pulseWa 2.6s ease-in-out infinite;
+}
+@keyframes pulseWa{
+  0%,100%{ box-shadow:0 14px 30px -8px rgba(37,211,102,.55); }
+  50%{ box-shadow:0 14px 30px -4px rgba(37,211,102,.85); }
+}
+
+/* ============================================================
+   19. RESPONSIVE
+   ============================================================ */
+@media (max-width:1100px){
+  .service-grid{ grid-template-columns:repeat(2,1fr); }
+  .style-grid{ grid-template-columns:repeat(4,1fr); }
+  .masonry{ column-count:3; }
+  .insta-grid{ grid-template-columns:repeat(4,1fr); }
+  .footer-grid{ grid-template-columns:1fr 1fr; row-gap:40px; }
+  .about-grid{ grid-template-columns:1fr; }
+  .about-media{ max-width:420px; margin:0 auto; }
+}
+@media (max-width:900px){
+  .nav-links{
+    position:fixed; top:0; right:-100%;
+    width:min(320px, 80vw); height:100vh;
+    background:rgba(251,248,244,.98);
+    backdrop-filter:blur(20px);
+    flex-direction:column;
+    justify-content:center;
+    gap:34px;
+    transition:right .55s var(--ease);
+    box-shadow:-20px 0 60px rgba(0,0,0,.12);
+  }
+  .nav-links.active{ right:0; }
+  .nav-toggle{ display:flex; }
+  .stats-grid{ grid-template-columns:1fr 1fr; gap:40px; }
+  .timeline{ grid-template-columns:1fr; gap:50px; }
+  .timeline::before{ display:none; }
+}
+@media (max-width:768px){
+  .service-grid{ grid-template-columns:1fr; }
+  .style-grid{ grid-template-columns:repeat(2,1fr); }
+  .masonry{ column-count:2; }
+  .insta-grid{ grid-template-columns:repeat(3,1fr); }
+  .footer-grid{ grid-template-columns:1fr; }
+  .about-cards{ grid-template-columns:1fr; }
+  .cta{ margin:0 4vw 90px; padding:70px 6vw; border-radius:28px; }
+  .t-card{ padding:36px 24px; }
+}
+@media (max-width:520px){
+  .style-grid{ grid-template-columns:repeat(2,1fr); }
+  .insta-grid{ grid-template-columns:repeat(2,1fr); }
+  .hero-actions{ flex-direction:column; width:100%; }
+  .hero-actions .btn{ justify-content:center; width:100%; }
+  .about-media .float-card{ right:8px; bottom:-24px; max-width:170px; padding:16px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
+/* ============================================================
+   20. ADMIN — botão flutuante, modal, formulários
+   ============================================================ */
+.admin-fab{
+  position:fixed;
+  bottom:30px; right:98px;
+  width:52px; height:52px;
+  border-radius:50%;
+  background:var(--charcoal);
+  color:var(--gold-light);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.05rem;
+  z-index:900;
+  box-shadow:var(--shadow-soft);
+  transition:transform .4s var(--ease), background .4s;
+  cursor:pointer;
+}
+.admin-fab:hover{ transform:translateY(-4px) rotate(20deg); background:var(--rose-gold-deep); }
+
+.admin-overlay{
+  position:fixed; inset:0;
+  background:rgba(23,18,16,.55);
+  backdrop-filter:blur(6px);
+  z-index:4000;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden;
+  transition:opacity .35s var(--ease), visibility .35s;
+  padding:4vw;
+  cursor:auto;
+}
+.admin-overlay.active{ opacity:1; visibility:visible; }
+.admin-overlay *{ cursor:auto; }
+
+.admin-modal{
+  width:min(980px, 100%);
+  max-height:88vh;
+  background:var(--ivory);
+  border-radius:24px;
+  box-shadow:0 40px 100px -20px rgba(0,0,0,.5);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.admin-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 30px;
+  background:var(--charcoal);
+  color:var(--white);
+}
+.admin-head h3{ font-family:var(--font-display); font-weight:600; font-size:1.2rem; }
+.admin-head h3 span{ color:var(--gold-light); font-style:italic; }
+.admin-close{
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(255,255,255,.1);
+  color:var(--white);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .3s, transform .3s;
+}
+.admin-close:hover{ background:rgba(255,255,255,.22); transform:rotate(90deg); }
+
+.admin-body{ display:flex; flex:1; min-height:0; }
+
+/* Login */
+.admin-login{
+  width:100%; max-width:360px; margin:60px auto; text-align:center;
+}
+.admin-login .icon-badge{
+  width:64px; height:64px; border-radius:50%;
+  background:var(--blush); color:var(--rose-gold-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; margin:0 auto 20px;
+}
+.admin-login h4{ font-family:var(--font-display); font-size:1.3rem; margin-bottom:8px; }
+.admin-login p{ font-size:.85rem; color:var(--taupe); margin-bottom:26px; }
+.field{ text-align:left; margin-bottom:16px; }
+.field label{ display:block; font-size:.76rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--taupe); margin-bottom:6px; }
+.field input, .field textarea{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--taupe-light);
+  border-radius:10px;
+  font-family:var(--font-body);
+  font-size:.9rem;
+  background:var(--white);
+  color:var(--charcoal);
+  transition:border-color .3s, box-shadow .3s;
+}
+.field input:focus, .field textarea:focus{
+  outline:none; border-color:var(--rose-gold-deep);
+  box-shadow:0 0 0 3px rgba(198,142,133,.18);
+}
+.field textarea{ resize:vertical; min-height:70px; }
+.admin-error{ color:#B3453A; font-size:.8rem; margin-top:10px; min-height:1em; }
+.admin-msg{ font-size:.8rem; margin-top:10px; min-height:1em; }
+.admin-msg.ok{ color:#3E7A4C; }
+
+/* Tabs / content editor */
+.admin-tabs{
+  width:210px; min-width:210px;
+  background:var(--ivory-deep);
+  border-right:1px solid var(--blush-deep);
+  overflow-y:auto;
+  padding:14px;
+}
+.admin-tab{
+  display:flex; align-items:center; gap:10px;
+  padding:11px 14px;
+  border-radius:10px;
+  font-size:.85rem; font-weight:500;
+  color:var(--charcoal);
+  cursor:pointer;
+  transition:background .3s;
+  margin-bottom:4px;
+}
+.admin-tab i{ width:16px; color:var(--rose-gold-deep); }
+.admin-tab:hover{ background:rgba(198,142,133,.12); }
+.admin-tab.active{ background:var(--rose-gold-deep); color:var(--white); }
+.admin-tab.active i{ color:var(--white); }
+
+.admin-panel{
+  flex:1;
+  overflow-y:auto;
+  padding:28px 32px;
+}
+.admin-panel h4{ font-family:var(--font-display); font-size:1.1rem; margin-bottom:20px; }
+.admin-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 20px; }
+
+.admin-item-card{
+  background:var(--white);
+  border:1px solid var(--blush-deep);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+  position:relative;
+}
+.admin-item-card .remove-item{
+  position:absolute; top:12px; right:12px;
+  width:28px; height:28px; border-radius:50%;
+  background:var(--blush); color:var(--rose-gold-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.75rem; transition:background .3s, color .3s;
+}
+.admin-item-card .remove-item:hover{ background:#B3453A; color:var(--white); }
+
+.admin-add-btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 18px;
+  border-radius:100px;
+  background:var(--blush);
+  color:var(--rose-gold-deep);
+  font-size:.82rem; font-weight:600;
+  transition:background .3s, color .3s;
+}
+.admin-add-btn:hover{ background:var(--rose-gold-deep); color:var(--white); }
+
+.admin-foot{
+  padding:18px 32px;
+  border-top:1px solid var(--blush-deep);
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--white);
+  flex-wrap:wrap; gap:10px;
+}
+.admin-save-btn{
+  padding:13px 30px; border-radius:100px;
+  background:linear-gradient(135deg, var(--rose-gold), var(--rose-gold-deep));
+  color:var(--white); font-weight:600; font-size:.86rem;
+  box-shadow:0 10px 24px -8px rgba(176,114,104,.5);
+  transition:transform .35s var(--ease);
+}
+.admin-save-btn:hover{ transform:translateY(-3px); }
+.admin-save-btn:disabled{ opacity:.6; transform:none; }
+.admin-logout-btn{ font-size:.82rem; color:var(--taupe); font-weight:500; }
+.admin-logout-btn:hover{ color:var(--rose-gold-deep); }
+
+.admin-banner{
+  font-size:.78rem;
+  padding:10px 16px;
+  border-radius:10px;
+  background:#FCEFC7;
+  color:#7A5C00;
+  margin-bottom:20px;
+  display:flex; align-items:center; gap:8px;
+}
+
+@media (max-width:760px){
+  .admin-body{ flex-direction:column; }
+  .admin-tabs{ width:100%; display:flex; gap:6px; overflow-x:auto; white-space:nowrap; }
+  .admin-tab{ margin-bottom:0; }
+  .admin-grid2{ grid-template-columns:1fr; }
+  .admin-fab{ right:30px; bottom:96px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="#inicio" class="logo"><span id="navBrandMain"></span><span id="navBrandAccent"></span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#galeria">Galeria</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#avaliacoes">Avaliações</a></li>
+      <li><a href="#contato">Contato</a></li>
+      <li><a href="#contato" class="nav-cta">Agendar</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-decor d1"></div>
+  <div class="hero-decor d2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><i class="fa-solid fa-sparkles"></i> <span id="heroEyebrow"></span></div>
+    <h1 class="reveal" id="heroTitle"></h1>
+    <p class="reveal" id="heroSubtitle"></p>
+    <div class="hero-actions reveal">
+      <a href="#contato" class="btn btn-primary"><i class="fa-regular fa-calendar"></i> <span id="heroBtnPrimary"></span></a>
+      <a href="#galeria" class="btn btn-ghost"><i class="fa-regular fa-images"></i> <span id="heroBtnGhost"></span></a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Role</span><div class="line"></div></div>
+</section>
+
+<div class="flourish" data-flourish>
+  <svg viewBox="0 0 220 46"><path d="M4 23 C 40 4, 70 42, 110 23 S 180 4, 216 23"/><circle cx="110" cy="23" r="3"/></svg>
+</div>
+
+<!-- ============================================================
+     SOBRE
+     ============================================================ -->
+<section class="about" id="sobre">
+  <div class="container about-grid">
+    <div class="about-media reveal-scale">
+      <img id="aboutImage" src="" alt="Foto do ambiente do salão">
+      <div class="float-card">
+        <div class="stars">★★★★★</div>
+        <strong id="aboutBadgeYears"></strong>
+        <p id="aboutBadgeText"></p>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="eyebrow" id="aboutEyebrow"></div>
+      <h2 class="section-title" id="aboutTitle"></h2>
+      <p class="lead" id="aboutLead"></p>
+      <div class="about-cards" id="aboutCards"></div>
+    </div>
+  </div>
+</section>
+
+<div class="flourish" data-flourish>
+  <svg viewBox="0 0 220 46"><path d="M4 23 C 40 4, 70 42, 110 23 S 180 4, 216 23"/><circle cx="110" cy="23" r="3"/></svg>
+</div>
+
+<!-- ============================================================
+     SERVIÇOS
+     ============================================================ -->
+<section class="services" id="servicos">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="servicesEyebrow"></div>
+      <h2 class="section-title" id="servicesTitle"></h2>
+      <p class="section-sub" id="servicesSub"></p>
+    </div>
+    <div class="service-grid" id="serviceGrid"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GALERIA
+     ============================================================ -->
+<section class="gallery" id="galeria">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="galleryEyebrow"></div>
+      <h2 class="section-title" id="galleryTitle"></h2>
+      <p class="section-sub" id="gallerySub"></p>
+    </div>
+    <div class="masonry reveal" id="masonry"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></div>
+  <img src="" alt="Imagem ampliada" id="lightboxImg">
+</div>
+
+<!-- ============================================================
+     ESCOLHA SEU ESTILO
+     ============================================================ -->
+<section class="styles">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="stylesEyebrow"></div>
+      <h2 class="section-title" id="stylesTitle"></h2>
+      <p class="section-sub" id="stylesSub"></p>
+    </div>
+    <div class="style-grid reveal" id="styleGrid"></div>
+  </div>
+</section>
+
+<div class="flourish" data-flourish>
+  <svg viewBox="0 0 220 46"><path d="M4 23 C 40 4, 70 42, 110 23 S 180 4, 216 23"/><circle cx="110" cy="23" r="3"/></svg>
+</div>
+
+<!-- ============================================================
+     COMO FUNCIONA
+     ============================================================ -->
+<section class="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="processEyebrow"></div>
+      <h2 class="section-title" id="processTitle"></h2>
+      <p class="section-sub" id="processSub"></p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DEPOIMENTOS
+     ============================================================ -->
+<section class="testimonials" id="avaliacoes">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="testimonialsEyebrow"></div>
+      <h2 class="section-title" id="testimonialsTitle"></h2>
+    </div>
+    <div class="carousel" id="carousel"></div>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ESTATÍSTICAS
+     ============================================================ -->
+<section class="stats">
+  <div class="container stats-grid" id="statsGrid"></div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="faq">
+  <div class="container faq-wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="faqEyebrow"></div>
+      <h2 class="section-title" id="faqTitle"></h2>
+    </div>
+    <div id="faqWrap"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     INSTAGRAM
+     ============================================================ -->
+<section class="instagram">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center" id="instaHandle"></div>
+      <h2 class="section-title" id="instaTitle"></h2>
+    </div>
+    <div class="insta-grid reveal" id="instaGrid"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA
+     ============================================================ -->
+<section class="cta" id="contato">
+  <div class="cta-content reveal">
+    <h2 id="ctaTitle"></h2>
+    <p id="ctaText"></p>
+    <a href="#" target="_blank" class="btn btn-primary" id="ctaBtn"><i class="fa-brands fa-whatsapp"></i> Agendar Agora</a>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#inicio" class="logo"><span id="footerBrandMain"></span><span id="footerBrandAccent"></span></a>
+        <p id="footerAbout"></p>
+        <div class="footer-social">
+          <a href="#" id="socialInstagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" id="socialWhatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" id="socialTiktok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" id="socialFacebook"><i class="fa-brands fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div>
+        <h5>Navegação</h5>
+        <ul class="flinks">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#galeria">Galeria</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Institucional</h5>
+        <ul class="flinks">
+          <li><a href="#avaliacoes">Avaliações</a></li>
+          <li><a href="#">Política de cancelamento</a></li>
+          <li><a href="#">Trabalhe conosco</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contato</h5>
+        <ul class="footer-contact">
+          <li><i class="fa-solid fa-location-dot"></i> <span id="footerAddress"></span></li>
+          <li><i class="fa-brands fa-whatsapp"></i> <span id="footerWhatsapp"></span></li>
+          <li><i class="fa-regular fa-envelope"></i> <span id="footerEmail"></span></li>
+        </ul>
+        <div class="footer-map">
+          <iframe id="footerMap" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerCopy"></span>
+      <span>Feito com <i class="fa-solid fa-heart" style="color:#C68E85"></i> para quem ama se cuidar</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" target="_blank" class="wa-float" id="waFloat"><i class="fa-brands fa-whatsapp"></i></a>
+<div class="to-top" id="toTop"><i class="fa-solid fa-arrow-up"></i></div>
+<div class="admin-fab" id="adminFab" title="Painel do administrador"><i class="fa-solid fa-gear"></i></div>
+
+<!-- ============================================================
+     PAINEL ADMINISTRATIVO
+     ============================================================ -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+    <div class="admin-head">
+      <h3>Painel <span>Admin</span> — Coimbra Nails</h3>
+      <div class="admin-close" id="adminClose"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="adminLoginView">
+      <div class="admin-login">
+        <div class="icon-badge"><i class="fa-solid fa-lock"></i></div>
+        <h4>Acesso restrito</h4>
+        <p id="adminModeNote">Entre com seu e-mail e senha de administrador.</p>
+        <div class="field"><label>E-mail</label><input type="email" id="loginEmail" autocomplete="username" placeholder="admin@coimbranails.com"></div>
+        <div class="field"><label>Senha</label><input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••"></div>
+        <button class="btn btn-primary" style="width:100%; justify-content:center" id="loginBtn">Entrar</button>
+        <div class="admin-error" id="loginError"></div>
+      </div>
+    </div>
+
+    <!-- CONTEÚDO (pós-login) -->
+    <div id="adminContentView" style="display:none; flex-direction:column; flex:1; min-height:0;">
+      <div class="admin-body">
+        <div class="admin-tabs" id="adminTabs">
+          <div class="admin-tab active" data-tab="marca"><i class="fa-solid fa-signature"></i> Marca</div>
+          <div class="admin-tab" data-tab="contato"><i class="fa-solid fa-address-card"></i> Contato</div>
+          <div class="admin-tab" data-tab="hero"><i class="fa-solid fa-house"></i> Hero</div>
+          <div class="admin-tab" data-tab="sobre"><i class="fa-solid fa-heart"></i> Sobre</div>
+          <div class="admin-tab" data-tab="servicos"><i class="fa-solid fa-spa"></i> Serviços</div>
+          <div class="admin-tab" data-tab="galeria"><i class="fa-regular fa-images"></i> Galeria</div>
+          <div class="admin-tab" data-tab="estilos"><i class="fa-solid fa-wand-magic-sparkles"></i> Estilos</div>
+          <div class="admin-tab" data-tab="processo"><i class="fa-solid fa-list-ol"></i> Como Funciona</div>
+          <div class="admin-tab" data-tab="depoimentos"><i class="fa-solid fa-comment-dots"></i> Depoimentos</div>
+          <div class="admin-tab" data-tab="estatisticas"><i class="fa-solid fa-chart-simple"></i> Estatísticas</div>
+          <div class="admin-tab" data-tab="faq"><i class="fa-regular fa-circle-question"></i> FAQ</div>
+          <div class="admin-tab" data-tab="instagram"><i class="fa-brands fa-instagram"></i> Instagram</div>
+          <div class="admin-tab" data-tab="cta"><i class="fa-solid fa-bullhorn"></i> Chamada final</div>
+          <div class="admin-tab" data-tab="rodape"><i class="fa-solid fa-shoe-prints"></i> Rodapé</div>
+        </div>
+        <div class="admin-panel" id="adminPanel"></div>
+      </div>
+      <div class="admin-foot">
+        <button class="admin-logout-btn" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span class="admin-msg" id="adminMsg"></span>
+          <button class="admin-save-btn" id="saveBtn">Salvar alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+<script>
+/* ================================================================
+   COIMBRA NAILS — MOTOR DE CONTEÚDO EDITÁVEL
+   ================================================================
+   COMO CONECTAR AO FIREBASE (para as edições valerem para TODOS
+   os visitantes do site):
+
+   1. Acesse https://console.firebase.google.com e crie um projeto
+      gratuito (plano "Spark").
+   2. No menu lateral, ative "Firestore Database" (modo produção).
+   3. Ainda no menu, ative "Authentication" > método "E-mail/senha".
+   4. Em Authentication > Users, clique em "Add user" e crie o
+      e-mail/senha que você (admin) vai usar para entrar no painel.
+   5. Em "Configurações do projeto" > "Geral", role até "Seus apps",
+      clique no ícone "</>" (Web), registre o app e copie o objeto
+      firebaseConfig que aparece.
+   6. Cole esse objeto na constante FIREBASE_CONFIG logo abaixo,
+      substituindo os valores de exemplo.
+   7. Em Firestore Database > Regras, cole:
+
+        rules_version = '2';
+        service cloud.firestore {
+          match /databases/{database}/documents {
+            match /site/content {
+              allow read: if true;
+              allow write: if request.auth != null;
+            }
+          }
+        }
+
+   Pronto — sem isso, o painel funciona em "modo local" (as edições
+   ficam salvas só neste navegador, ótimo para testar antes de
+   publicar).
+   ================================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDVO_QuO6qHyh1djYysJuAqFweEJsxAR9M",
+  authDomain: "coimbra-nails-9433b.firebaseapp.com",
+  projectId: "coimbra-nails-9433b",
+  storageBucket: "coimbra-nails-9433b.firebasestorage.app",
+  messagingSenderId: "744395548668",
+  appId: "1:744395548668:web:c39d20783ec77315747479"
+};
+
+const CLOUD_MODE = FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf("COLE_AQUI") === -1;
+
+/* ---------------------------------------------------------------
+   CONTEÚDO PADRÃO (usado no 1º carregamento e como reserva offline)
+   --------------------------------------------------------------- */
+const defaultContent = {
+  brand: { name: "Coimbra ", accent: "Nails" },
+  contact: {
+    whatsapp: "5521999999999",
+    whatsappDisplay: "(21) 99999-9999",
+    email: "contato@coimbranails.com",
+    address: "Av. das Américas, 1200 — Barra da Tijuca, RJ",
+    mapQuery: "Barra da Tijuca, Rio de Janeiro",
+    instagramHandle: "@coimbra.nails",
+    instagramUrl: "#",
+    facebookUrl: "#",
+    tiktokUrl: "#"
+  },
+  hero: {
+    eyebrow: "Nail Atelier de Alta Curadoria",
+    titlePre: "Suas unhas,",
+    titleEm: "sua",
+    titlePost: "obra de arte",
+    subtitle: "Alongamento, nail art e cuidados premium em um ambiente pensado para o seu momento de pausa e beleza.",
+    bgImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1800&q=80",
+    btnPrimary: "Agendar Horário",
+    btnGhost: "Ver Trabalhos"
+  },
+  about: {
+    eyebrow: "Nossa história",
+    titlePre: "Um espaço para",
+    titleEm: "se cuidar",
+    titlePost: ", sem pressa",
+    lead: "A Coimbra Nails nasceu do desejo de transformar o cuidado com as unhas em um verdadeiro ritual. Combinamos técnica apurada, produtos premium e uma decoração pensada em cada detalhe para que você viva uma experiência única — do primeiro café à última camada de brilho.",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80",
+    badgeYears: "+8 anos",
+    badgeText: "De cuidado e sofisticação com as mãos de nossas clientes.",
+    cards: [
+      { icon: "fa-solid fa-heart", title: "Atendimento personalizado", text: "Cada cliente é ouvida antes de cada procedimento." },
+      { icon: "fa-solid fa-gem", title: "Produtos Premium", text: "Marcas selecionadas para saúde e durabilidade." },
+      { icon: "fa-solid fa-spa", title: "Ambiente confortável", text: "Espaço acolhedor, calmo e impecavelmente limpo." },
+      { icon: "fa-regular fa-clock", title: "Horário marcado", text: "Pontualidade para respeitar o seu tempo." }
+    ]
+  },
+  servicesHead: { eyebrow: "Menu de serviços", titlePre: "Cuidados feitos", titleEm: "sob medida", sub: "Técnicas modernas e produtos de alta performance para cada tipo de unha e estilo de vida." },
+  services: [
+    { image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=80", name: "Alongamento em Gel", description: "Estrutura leve e resistente com acabamento natural e brilho duradouro.", time: "2h", price: "R$ 130", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1512207489753-59c39c5b7ee2?auto=format&fit=crop&w=700&q=80", name: "Fibra", description: "Reforço ultraleve indicado para unhas fracas, com aspecto extremamente natural.", time: "2h", price: "R$ 150", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=700&q=80", name: "Banho em Gel", description: "Reveste e fortalece a unha natural com camada fina de altíssimo brilho.", time: "1h", price: "R$ 90", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=700&q=80", name: "Blindagem", description: "Proteção reforçada para unhas naturais frágeis ou em recuperação.", time: "1h30", price: "R$ 100", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1595867818082-083862f3d630?auto=format&fit=crop&w=700&q=80", name: "Esmaltação em Gel", description: "Cor intensa e brilho de salão com duração de até três semanas.", time: "50min", price: "R$ 70", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=700&q=80", name: "Spa dos Pés", description: "Esfoliação, hidratação profunda e massagem relaxante para os pés.", time: "1h", price: "R$ 110", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1600428610561-5df9a9ad3921?auto=format&fit=crop&w=700&q=80", name: "Pedicure", description: "Cuidado completo com cutilagem, lixamento e esmaltação impecável.", time: "50min", price: "R$ 80", priceNote: "/sessão" },
+    { image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=700&q=80", name: "Nail Art", description: "Desenhos autorais, pedrarias e efeitos exclusivos para cada ocasião.", time: "+30min", price: "a partir de R$ 20", priceNote: "" }
+  ],
+  galleryHead: { eyebrow: "Portfólio", titlePre: "Galeria de", titleEm: "trabalhos", sub: "Uma seleção dos nossos looks favoritos. Clique em qualquer imagem para ampliar." },
+  gallery: [
+    { image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1512207489753-59c39c5b7ee2?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1596704017254-9b121068fc31?auto=format&fit=crop&w=600&q=95" },
+    { image: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=600&q=90" },
+    { image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1595867818082-083862f3d630?auto=format&fit=crop&w=600&q=95" },
+    { image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1600428610561-5df9a9ad3921?auto=format&fit=crop&w=600&q=90" },
+    { image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80" },
+    { image: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=600&q=90" }
+  ],
+  stylesHead: { eyebrow: "Personalidade", titlePre: "Escolha o seu", titleEm: "estilo", sub: "Do minimalista ao maximalista — encontre o visual que combina com você." },
+  styles: [
+    { image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&q=80", name: "Minimalista" },
+    { image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=400&q=80", name: "Luxo" },
+    { image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=80", name: "Glitter" },
+    { image: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=400&q=80", name: "Francesinha" },
+    { image: "https://images.unsplash.com/photo-1512207489753-59c39c5b7ee2?auto=format&fit=crop&w=400&q=80", name: "Encapsulada" },
+    { image: "https://images.unsplash.com/photo-1595867818082-083862f3d630?auto=format&fit=crop&w=400&q=80", name: "Nude" },
+    { image: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=400&q=80", name: "Coloridas" }
+  ],
+  processHead: { eyebrow: "Passo a passo", titlePre: "Como", titleEm: "funciona", sub: "Um processo simples para uma experiência sem complicações." },
+  process: [
+    { title: "Escolha o serviço", text: "Navegue pelo nosso menu e escolha o que combina com você." },
+    { title: "Agende", text: "Selecione o melhor dia e horário direto pelo WhatsApp." },
+    { title: "Compareça", text: "Chegue e aproveite um atendimento tranquilo e pontual." },
+    { title: "Saia incrível", text: "Vá embora com unhas impecáveis e a autoestima renovada." }
+  ],
+  testimonialsHead: { eyebrow: "Depoimentos", titlePre: "O que dizem", titleEm: "nossas clientes" },
+  testimonials: [
+    { photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80", quote: "Ambiente maravilhoso e um cuidado com os detalhes que eu nunca tinha visto em outro salão. Saio sempre renovada.", name: "Juliana Alves", role: "Cliente desde 2022" },
+    { photo: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=200&q=80", quote: "A nail art é surreal, sempre recebo elogios. E o atendimento pontual faz toda a diferença na minha rotina corrida.", name: "Marina Costa", role: "Cliente desde 2023" },
+    { photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80", quote: "Profissionais extremamente cuidadosas e produtos de altíssima qualidade. Minha unha natural nunca esteve tão forte.", name: "Beatriz Lima", role: "Cliente desde 2021" }
+  ],
+  stats: [
+    { value: "3200", label: "Clientes atendidas" },
+    { value: "8", label: "Anos de experiência" },
+    { value: "980", label: "Avaliações 5★" },
+    { value: "12500", label: "Agendamentos" }
+  ],
+  faqHead: { eyebrow: "Dúvidas", titlePre: "Perguntas", titleEm: "frequentes" },
+  faq: [
+    { q: "Preciso agendar com antecedência?", a: "Recomendamos agendar com pelo menos 2 dias de antecedência para garantir o melhor horário disponível." },
+    { q: "Quais formas de pagamento vocês aceitam?", a: "Aceitamos Pix, cartões de débito/crédito e dinheiro. Parcelamos serviços acima de R$ 200." },
+    { q: "Vocês atendem unhas naturais fracas?", a: "Sim! Temos protocolos de blindagem e fortalecimento específicos para recuperação da unha natural." },
+    { q: "Posso remarcar meu horário?", a: "Claro, pedimos apenas um aviso com 24h de antecedência para reorganizarmos a agenda." },
+    { q: "Vocês vendem produtos para uso em casa?", a: "Sim, trabalhamos com uma linha exclusiva de óleos cuticulares e fortalecedores." }
+  ],
+  instaTitle: { titlePre: "Siga no", titleEm: "Instagram" },
+  instagram: [
+    { image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1512207489753-59c39c5b7ee2?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1595867818082-083862f3d630?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1600428610561-5df9a9ad3921?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=300&q=70" },
+    { image: "https://images.unsplash.com/photo-1596704017254-9b121068fc31?auto=format&fit=crop&w=300&q=70" }
+  ],
+  cta: { titlePre: "Pronta para", titleEm: "renovar", titlePost: "suas unhas?", text: "Reserve seu horário agora e viva a experiência Coimbra Nails — atendimento exclusivo, do jeito que você merece." },
+  footer: { about: "Nail Atelier dedicado a transformar o cuidado com as unhas em uma experiência de luxo, leveza e autoestima." }
+};
+
+let currentContent = JSON.parse(JSON.stringify(defaultContent));
+let draftContent = null;
+
+/* ---------------------------------------------------------------
+   CAMADA DE DADOS: Firebase (nuvem) ou localStorage (modo local)
+   --------------------------------------------------------------- */
+const LOCAL_KEY = "coimbra_nails_content_v1";
+let fb = { app: null, auth: null, db: null };
+
+function loadFirebaseScripts(){
+  return new Promise((resolve, reject)=>{
+    const s1 = document.createElement('script');
+    s1.src = "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
+    s1.onload = ()=>{
+      const s2 = document.createElement('script');
+      s2.src = "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+      s2.onload = ()=>{
+        const s3 = document.createElement('script');
+        s3.src = "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
+        s3.onload = resolve;
+        s3.onerror = reject;
+        document.head.appendChild(s3);
+      };
+      s2.onerror = reject;
+      document.head.appendChild(s2);
+    };
+    s1.onerror = reject;
+    document.head.appendChild(s1);
+  });
+}
+
+async function initDataLayer(){
+  if(CLOUD_MODE){
+    try{
+      await loadFirebaseScripts();
+      fb.app = firebase.initializeApp(FIREBASE_CONFIG);
+      fb.auth = firebase.auth();
+      fb.db = firebase.firestore();
+      subscribeContent();
+    }catch(err){
+      console.error("Falha ao carregar Firebase, usando modo local.", err);
+      loadLocalAndRender();
+    }
+  }else{
+    loadLocalAndRender();
+  }
+}
+
+function loadLocalAndRender(){
+  try{
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if(raw) currentContent = JSON.parse(raw);
+  }catch(e){ /* mantém o padrão */ }
+  renderAll(currentContent);
+}
+
+function subscribeContent(){
+  fb.db.collection("site").doc("content").onSnapshot((doc)=>{
+    if(doc.exists){
+      currentContent = doc.data().data ? doc.data().data : defaultContent;
+      renderAll(currentContent);
+    }else{
+      renderAll(currentContent); // usa o padrão até o admin salvar pela 1ª vez
+    }
+  }, (err)=>{
+    console.error("Erro ao ler Firestore:", err);
+    renderAll(currentContent);
+  });
+}
+
+async function persistContent(data){
+  if(CLOUD_MODE && fb.db){
+    await fb.db.collection("site").doc("content").set({ data: data });
+  }else{
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
+    currentContent = data;
+    renderAll(currentContent);
+  }
+}
+
+/* ---------------------------------------------------------------
+   HELPERS
+   --------------------------------------------------------------- */
+function esc(s){
+  return String(s === undefined || s === null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function setText(id, value){ const el = document.getElementById(id); if(el) el.textContent = value || ""; }
+function setHTML(id, value){ const el = document.getElementById(id); if(el) el.innerHTML = value || ""; }
+
+/* ---------------------------------------------------------------
+   RENDERIZAÇÃO DE CADA SEÇÃO A PARTIR DO CONTEÚDO
+   --------------------------------------------------------------- */
+function renderAll(c){
+  // Marca
+  setText('navBrandMain', c.brand.name);
+  setHTML('navBrandAccent', `<span>${esc(c.brand.accent)}</span>`);
+  setText('footerBrandMain', c.brand.name);
+  setHTML('footerBrandAccent', `<span>${esc(c.brand.accent)}</span>`);
+
+  // Hero
+  document.getElementById('heroBg').style.backgroundImage =
+    `linear-gradient(180deg, rgba(42,35,32,.28) 0%, rgba(42,35,32,.10) 40%, rgba(251,248,244,.96) 100%), url('${c.hero.bgImage}')`;
+  setText('heroEyebrow', c.hero.eyebrow);
+  setHTML('heroTitle', `${esc(c.hero.titlePre)} <em>${esc(c.hero.titleEm)}</em><br> ${esc(c.hero.titlePost)}`);
+  setText('heroSubtitle', c.hero.subtitle);
+  setText('heroBtnPrimary', c.hero.btnPrimary);
+  setText('heroBtnGhost', c.hero.btnGhost);
+
+  // Sobre
+  document.getElementById('aboutImage').src = c.about.image;
+  setText('aboutBadgeYears', c.about.badgeYears);
+  setText('aboutBadgeText', c.about.badgeText);
+  setText('aboutEyebrow', c.about.eyebrow);
+  setHTML('aboutTitle', `${esc(c.about.titlePre)} <em>${esc(c.about.titleEm)}</em>${esc(c.about.titlePost)}`);
+  setText('aboutLead', c.about.lead);
+  setHTML('aboutCards', c.about.cards.map(card => `
+    <div class="about-card"><div class="icon"><i class="${esc(card.icon)}"></i></div><div><h4>${esc(card.title)}</h4><p>${esc(card.text)}</p></div></div>
+  `).join(''));
+
+  // Serviços
+  setText('servicesEyebrow', c.servicesHead.eyebrow);
+  setHTML('servicesTitle', `${esc(c.servicesHead.titlePre)} <em>${esc(c.servicesHead.titleEm)}</em>`);
+  setText('servicesSub', c.servicesHead.sub);
+  setHTML('serviceGrid', c.services.map(s => `
+    <div class="service-card reveal in">
+      <div class="service-media">
+        <img src="${esc(s.image)}" alt="${esc(s.name)}">
+        <div class="service-time"><i class="fa-regular fa-clock"></i> ${esc(s.time)}</div>
+      </div>
+      <div class="service-body">
+        <h3>${esc(s.name)}</h3>
+        <p>${esc(s.description)}</p>
+        <div class="service-foot"><div class="service-price">${esc(s.price)} <span>${esc(s.priceNote)}</span></div><div class="service-link"><i class="fa-solid fa-arrow-up-right"></i></div></div>
+      </div>
+    </div>
+  `).join(''));
+
+  // Galeria
+  setText('galleryEyebrow', c.galleryHead.eyebrow);
+  setHTML('galleryTitle', `${esc(c.galleryHead.titlePre)} <em>${esc(c.galleryHead.titleEm)}</em>`);
+  setText('gallerySub', c.galleryHead.sub);
+  setHTML('masonry', c.gallery.map((g,i) => `
+    <div class="masonry-item"><img src="${esc(g.image)}" alt="Trabalho ${i+1}"><div class="masonry-overlay"><span><i class="fa-regular fa-eye"></i> Ampliar</span></div></div>
+  `).join(''));
+
+  // Estilos
+  setText('stylesEyebrow', c.stylesHead.eyebrow);
+  setHTML('stylesTitle', `${esc(c.stylesHead.titlePre)} <em>${esc(c.stylesHead.titleEm)}</em>`);
+  setText('stylesSub', c.stylesHead.sub);
+  setHTML('styleGrid', c.styles.map(s => `
+    <div class="style-card"><img src="${esc(s.image)}" alt="${esc(s.name)}"><div class="style-name">${esc(s.name)}</div></div>
+  `).join(''));
+
+  // Como funciona
+  setText('processEyebrow', c.processHead.eyebrow);
+  setHTML('processTitle', `${esc(c.processHead.titlePre)} <em>${esc(c.processHead.titleEm)}</em>`);
+  setText('processSub', c.processHead.sub);
+  setHTML('timeline', c.process.map((p,i) => `
+    <div class="tl-step reveal in"><div class="tl-num">${i+1}</div><h4>${esc(p.title)}</h4><p>${esc(p.text)}</p></div>
+  `).join(''));
+
+  // Depoimentos
+  setText('testimonialsEyebrow', c.testimonialsHead.eyebrow);
+  setHTML('testimonialsTitle', `${esc(c.testimonialsHead.titlePre)} <em>${esc(c.testimonialsHead.titleEm)}</em>`);
+  setHTML('carousel', c.testimonials.map((t,i) => `
+    <div class="t-card${i===0 ? ' active' : ''}">
+      <img src="${esc(t.photo)}" alt="${esc(t.name)}">
+      <div class="t-stars">★★★★★</div>
+      <p class="quote">${esc(t.quote)}</p>
+      <div class="name">${esc(t.name)}</div>
+      <div class="role">${esc(t.role)}</div>
+    </div>
+  `).join(''));
+
+  // Estatísticas
+  setHTML('statsGrid', c.stats.map(s => `
+    <div class="stat reveal in"><div class="num"><span data-count="${parseInt(s.value,10) || 0}">0</span>${/\d$/.test(String(s.value).trim()) ? '+' : ''}</div><div class="label">${esc(s.label)}</div></div>
+  `).join(''));
+
+  // FAQ
+  setText('faqEyebrow', c.faqHead.eyebrow);
+  setHTML('faqTitle', `${esc(c.faqHead.titlePre)} <em>${esc(c.faqHead.titleEm)}</em>`);
+  setHTML('faqWrap', c.faq.map((f,i) => `
+    <div class="faq-item reveal in${i===0 ? ' open' : ''}">
+      <div class="faq-q"><span>${esc(f.q)}</span><i class="fa-solid fa-plus"></i></div>
+      <div class="faq-a"><p>${esc(f.a)}</p></div>
+    </div>
+  `).join(''));
+
+  // Instagram
+  setText('instaHandle', c.contact.instagramHandle);
+  setHTML('instaTitle', `${esc(c.instaTitle.titlePre)} <em>${esc(c.instaTitle.titleEm)}</em>`);
+  setHTML('instaGrid', c.instagram.map((g,i) => `
+    <div class="insta-item"><img src="${esc(g.image)}" alt="Instagram ${i+1}"><div class="ov"><i class="fa-brands fa-instagram"></i></div></div>
+  `).join(''));
+
+  // CTA
+  setHTML('ctaTitle', `${esc(c.cta.titlePre)} <em>${esc(c.cta.titleEm)}</em> ${esc(c.cta.titlePost)}`);
+  setText('ctaText', c.cta.text);
+  document.getElementById('ctaBtn').href = `https://wa.me/${c.contact.whatsapp}`;
+
+  // Rodapé / contato
+  setText('footerAbout', c.footer.about);
+  setText('footerAddress', c.contact.address);
+  setText('footerWhatsapp', c.contact.whatsappDisplay);
+  setText('footerEmail', c.contact.email);
+  document.getElementById('footerMap').src = `https://www.google.com/maps?q=${encodeURIComponent(c.contact.mapQuery)}&output=embed`;
+  document.getElementById('socialInstagram').href = c.contact.instagramUrl || '#';
+  document.getElementById('socialWhatsapp').href = `https://wa.me/${c.contact.whatsapp}`;
+  document.getElementById('socialTiktok').href = c.contact.tiktokUrl || '#';
+  document.getElementById('socialFacebook').href = c.contact.facebookUrl || '#';
+  setText('footerCopy', `© ${new Date().getFullYear()} ${c.brand.name}${c.brand.accent}. Todos os direitos reservados.`);
+  document.getElementById('waFloat').href = `https://wa.me/${c.contact.whatsapp}`;
+
+  attachBehaviors();
+}
+
+/* ---------------------------------------------------------------
+   COMPORTAMENTOS INTERATIVOS (religados a cada renderização)
+   --------------------------------------------------------------- */
+function attachBehaviors(){
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal:not(.in), .reveal-scale:not(.in), .flourish:not(.in)');
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach((entry, i)=>{
+      if(entry.isIntersecting){
+        setTimeout(()=> entry.target.classList.add('in'), i * 40);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.16 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  document.querySelectorAll('.masonry-item img').forEach(img=>{
+    img.onclick = ()=>{
+      lightboxImg.src = img.src.replace(/w=\d+/, 'w=1400');
+      lightbox.classList.add('active');
+    };
+  });
+
+  // Carousel
+  const tCards = document.querySelectorAll('.t-card');
+  const dotsWrap = document.getElementById('carouselDots');
+  dotsWrap.innerHTML = '';
+  let tIndex = 0, tTimer;
+  tCards.forEach((_, i)=>{
+    const dot = document.createElement('button');
+    if(i === 0) dot.classList.add('active');
+    dot.addEventListener('click', ()=> goToSlide(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = dotsWrap.querySelectorAll('button');
+  function goToSlide(i){
+    if(!tCards[tIndex]) return;
+    tCards[tIndex].classList.remove('active');
+    dots[tIndex].classList.remove('active');
+    tIndex = i;
+    tCards[tIndex].classList.add('active');
+    dots[tIndex].classList.add('active');
+    restartAutoplay();
+  }
+  function nextSlide(){ if(tCards.length) goToSlide((tIndex + 1) % tCards.length); }
+  function restartAutoplay(){ clearInterval(tTimer); tTimer = setInterval(nextSlide, 5200); }
+  if(tCards.length) restartAutoplay();
+
+  // Contadores animados
+  const counters = document.querySelectorAll('[data-count]');
+  const counterObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+        const duration = 1800;
+        const start = performance.now();
+        function tick(now){
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.floor(eased * target).toLocaleString('pt-BR');
+          if(progress < 1) requestAnimationFrame(tick);
+          else el.textContent = target.toLocaleString('pt-BR');
+        }
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObserver.observe(c));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').onclick = ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    };
+  });
+
+  // Cursor hover-grow triggers
+  document.querySelectorAll('a, button, .service-card, .style-card, .masonry-item, .faq-q').forEach(el=>{
+    el.addEventListener('mouseenter', ()=> cursorRing && cursorRing.classList.add('grow'));
+    el.addEventListener('mouseleave', ()=> cursorRing && cursorRing.classList.remove('grow'));
+  });
+}
+
+/* ---------------------------------------------------------------
+   CURSOR, NAVBAR, PARALLAX, LIGHTBOX-CLOSE, TOPO (fixos, 1x)
+   --------------------------------------------------------------- */
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+});
+function animateRing(){
+  ringX += (mouseX - ringX) * 0.16;
+  ringY += (mouseY - ringY) * 0.16;
+  cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', ()=>{
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('toTop').classList.toggle('show', window.scrollY > 700);
+});
+
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', ()=>{
+  navToggle.classList.toggle('active');
+  navLinks.classList.toggle('active');
+});
+navLinks.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    navToggle.classList.remove('active');
+    navLinks.classList.remove('active');
+  });
+});
+
+const heroBg = document.getElementById('heroBg');
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  if(y < window.innerHeight){
+    heroBg.style.transform = `translateY(${y * 0.28}px) scale(${1 + y*0.0003})`;
+  }
+});
+
+const lightbox = document.getElementById('lightbox');
+document.getElementById('lightboxClose').addEventListener('click', ()=> lightbox.classList.remove('active'));
+lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) lightbox.classList.remove('active'); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') lightbox.classList.remove('active'); });
+
+document.getElementById('toTop').addEventListener('click', ()=>{
+  window.scrollTo({ top:0, behavior:'smooth' });
+});
+
+/* ================================================================
+   PAINEL ADMINISTRATIVO
+   ================================================================ */
+const adminOverlay = document.getElementById('adminOverlay');
+const adminFab = document.getElementById('adminFab');
+const adminClose = document.getElementById('adminClose');
+const adminLoginView = document.getElementById('adminLoginView');
+const adminContentView = document.getElementById('adminContentView');
+const adminModeNote = document.getElementById('adminModeNote');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('loginError');
+const logoutBtn = document.getElementById('logoutBtn');
+const saveBtn = document.getElementById('saveBtn');
+const adminMsg = document.getElementById('adminMsg');
+const adminPanel = document.getElementById('adminPanel');
+const adminTabs = document.getElementById('adminTabs');
+
+adminModeNote.textContent = CLOUD_MODE
+  ? "Entre com o e-mail e a senha criados no Firebase Authentication."
+  : "Modo local: crie uma senha abaixo (fica salva só neste navegador).";
+
+adminFab.addEventListener('click', ()=>{
+  adminOverlay.classList.add('active');
+  checkAuthState();
+});
+adminClose.addEventListener('click', ()=> adminOverlay.classList.remove('active'));
+adminOverlay.addEventListener('click', (e)=>{ if(e.target === adminOverlay) adminOverlay.classList.remove('active'); });
+
+function checkAuthState(){
+  if(CLOUD_MODE && fb.auth){
+    if(fb.auth.currentUser){ showAdminContent(); }
+    else{ showAdminLogin(); }
+  }else{
+    // modo local: senha simples guardada no localStorage do próprio navegador
+    if(sessionStorage.getItem('coimbra_local_admin') === '1'){ showAdminContent(); }
+    else{ showAdminLogin(); }
+  }
+}
+
+function showAdminLogin(){
+  adminLoginView.style.display = 'block';
+  adminContentView.style.display = 'none';
+  loginError.textContent = '';
+}
+function showAdminContent(){
+  adminLoginView.style.display = 'none';
+  adminContentView.style.display = 'flex';
+  draftContent = JSON.parse(JSON.stringify(currentContent));
+  adminMsg.textContent = '';
+  buildTab('marca');
+}
+
+loginBtn.addEventListener('click', async ()=>{
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  loginError.textContent = '';
+  if(!email || !pass){ loginError.textContent = 'Preencha e-mail e senha.'; return; }
+
+  if(CLOUD_MODE && fb.auth){
+    try{
+      await fb.auth.signInWithEmailAndPassword(email, pass);
+      showAdminContent();
+    }catch(err){
+      loginError.textContent = 'E-mail ou senha inválidos.';
+    }
+  }else{
+    // modo local — primeira vez define a senha, próximas vezes ela é conferida
+    const savedPass = localStorage.getItem('coimbra_local_admin_pass');
+    if(!savedPass){
+      localStorage.setItem('coimbra_local_admin_pass', pass);
+      localStorage.setItem('coimbra_local_admin_email', email);
+      sessionStorage.setItem('coimbra_local_admin', '1');
+      showAdminContent();
+    }else if(pass === savedPass){
+      sessionStorage.setItem('coimbra_local_admin', '1');
+      showAdminContent();
+    }else{
+      loginError.textContent = 'Senha incorreta.';
+    }
+  }
+});
+
+logoutBtn.addEventListener('click', ()=>{
+  if(CLOUD_MODE && fb.auth){ fb.auth.signOut(); }
+  else{ sessionStorage.removeItem('coimbra_local_admin'); }
+  adminOverlay.classList.remove('active');
+});
+
+adminTabs.querySelectorAll('.admin-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    adminTabs.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    buildTab(tab.getAttribute('data-tab'));
+  });
+});
+
+saveBtn.addEventListener('click', async ()=>{
+  saveBtn.disabled = true;
+  adminMsg.textContent = 'Salvando...';
+  adminMsg.classList.remove('ok');
+  try{
+    await persistContent(draftContent);
+    adminMsg.textContent = CLOUD_MODE ? 'Salvo! Já está no ar para todos os visitantes.' : 'Salvo neste navegador.';
+    adminMsg.classList.add('ok');
+  }catch(err){
+    console.error(err);
+    adminMsg.textContent = 'Erro ao salvar. Verifique sua conexão/config do Firebase.';
+  }
+  saveBtn.disabled = false;
+});
+
+/* ---- construtores de formulário (genéricos) ---- */
+function fieldRow(label, key, value, type){
+  type = type || 'text';
+  const safe = esc(value);
+  if(type === 'textarea'){
+    return `<div class="field"><label>${label}</label><textarea data-obj="${key}">${safe}</textarea></div>`;
+  }
+  return `<div class="field"><label>${label}</label><input type="text" data-obj="${key}" value="${safe}"></div>`;
+}
+
+function bindObjectFields(root, targetObj){
+  root.querySelectorAll('[data-obj]').forEach(input=>{
+    input.addEventListener('input', ()=>{
+      targetObj[input.getAttribute('data-obj')] = input.value;
+    });
+  });
+}
+
+function renderListEditor(container, list, fields, addLabel, rebuildFn){
+  let html = '';
+  list.forEach((item, idx)=>{
+    html += `<div class="admin-item-card" data-list-idx="${idx}">
+      <div class="remove-item" data-remove="${idx}"><i class="fa-solid fa-trash"></i></div>
+      ${fields.map(f => `<div class="field"><label>${f.label}</label>${
+        f.type === 'textarea'
+          ? `<textarea data-list-field="${f.key}" data-list-idx="${idx}">${esc(item[f.key])}</textarea>`
+          : `<input type="text" data-list-field="${f.key}" data-list-idx="${idx}" value="${esc(item[f.key])}">`
+      }</div>`).join('')}
+    </div>`;
+  });
+  html += `<div class="admin-add-btn" id="addListItem"><i class="fa-solid fa-plus"></i> ${addLabel}</div>`;
+  container.innerHTML = html;
+
+  container.querySelectorAll('[data-list-field]').forEach(input=>{
+    input.addEventListener('input', ()=>{
+      const idx = parseInt(input.getAttribute('data-list-idx'), 10);
+      const key = input.getAttribute('data-list-field');
+      list[idx][key] = input.value;
+    });
+  });
+  container.querySelectorAll('[data-remove]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = parseInt(btn.getAttribute('data-remove'), 10);
+      list.splice(idx, 1);
+      renderListEditor(container, list, fields, addLabel, rebuildFn);
+    });
+  });
+  const addBtn = container.querySelector('#addListItem');
+  if(addBtn){
+    addBtn.addEventListener('click', ()=>{
+      const blank = {};
+      fields.forEach(f => blank[f.key] = '');
+      list.push(blank);
+      renderListEditor(container, list, fields, addLabel, rebuildFn);
+    });
+  }
+}
+
+function buildTab(tabName){
+  const d = draftContent;
+  let html = '';
+
+  if(!CLOUD_MODE){
+    html += `<div class="admin-banner"><i class="fa-solid fa-triangle-exclamation"></i> Modo local: as alterações valem só para este navegador. Configure o Firebase (veja comentário no topo do código) para publicar para todos os visitantes.</div>`;
+  }
+
+  adminPanel.innerHTML = html + '<div id="tabInner"></div>';
+  const inner = document.getElementById('tabInner');
+
+  if(tabName === 'marca'){
+    inner.innerHTML = `<h4>Marca</h4>
+      ${fieldRow('Nome principal (ex: Coimbra)', 'name', d.brand.name)}
+      ${fieldRow('Nome em destaque (ex: Nails)', 'accent', d.brand.accent)}`;
+    bindObjectFields(inner, d.brand);
+
+  }else if(tabName === 'contato'){
+    inner.innerHTML = `<h4>Contato</h4>
+      ${fieldRow('WhatsApp — só números com DDI+DDD (ex: 5521999999999)', 'whatsapp', d.contact.whatsapp)}
+      ${fieldRow('WhatsApp — como aparece no site (ex: (21) 99999-9999)', 'whatsappDisplay', d.contact.whatsappDisplay)}
+      ${fieldRow('E-mail', 'email', d.contact.email)}
+      ${fieldRow('Endereço', 'address', d.contact.address)}
+      ${fieldRow('Endereço para o mapa (texto de busca)', 'mapQuery', d.contact.mapQuery)}
+      ${fieldRow('Instagram — @ exibido', 'instagramHandle', d.contact.instagramHandle)}
+      ${fieldRow('Instagram — link', 'instagramUrl', d.contact.instagramUrl)}
+      ${fieldRow('Facebook — link', 'facebookUrl', d.contact.facebookUrl)}
+      ${fieldRow('TikTok — link', 'tiktokUrl', d.contact.tiktokUrl)}`;
+    bindObjectFields(inner, d.contact);
+
+  }else if(tabName === 'hero'){
+    inner.innerHTML = `<h4>Hero (topo do site)</h4>
+      ${fieldRow('Selo acima do título', 'eyebrow', d.hero.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.hero.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.hero.titleEm)}
+      ${fieldRow('Título — parte final', 'titlePost', d.hero.titlePost)}
+      ${fieldRow('Subtítulo', 'subtitle', d.hero.subtitle, 'textarea')}
+      ${fieldRow('Imagem de fundo (URL)', 'bgImage', d.hero.bgImage)}
+      ${fieldRow('Texto botão principal', 'btnPrimary', d.hero.btnPrimary)}
+      ${fieldRow('Texto botão secundário', 'btnGhost', d.hero.btnGhost)}`;
+    bindObjectFields(inner, d.hero);
+
+  }else if(tabName === 'sobre'){
+    inner.innerHTML = `<h4>Sobre</h4>
+      ${fieldRow('Selo', 'eyebrow', d.about.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.about.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.about.titleEm)}
+      ${fieldRow('Título — parte final', 'titlePost', d.about.titlePost)}
+      ${fieldRow('Texto principal', 'lead', d.about.lead, 'textarea')}
+      ${fieldRow('Imagem (URL)', 'image', d.about.image)}
+      ${fieldRow('Selo flutuante — número', 'badgeYears', d.about.badgeYears)}
+      ${fieldRow('Selo flutuante — texto', 'badgeText', d.about.badgeText, 'textarea')}
+      <h4 style="margin-top:24px">Cards de diferenciais</h4>
+      <div id="aboutCardsEditor"></div>`;
+    bindObjectFields(inner, d.about);
+    renderListEditor(document.getElementById('aboutCardsEditor'), d.about.cards,
+      [{key:'icon',label:'Ícone (classe Font Awesome, ex: fa-solid fa-heart)'},{key:'title',label:'Título'},{key:'text',label:'Texto',type:'textarea'}],
+      'Adicionar card');
+
+  }else if(tabName === 'servicos'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Selo', 'eyebrow', d.servicesHead.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.servicesHead.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.servicesHead.titleEm)}
+      ${fieldRow('Subtítulo', 'sub', d.servicesHead.sub, 'textarea')}
+      <h4 style="margin-top:24px">Serviços</h4>
+      <div id="servicesEditor"></div>`;
+    bindObjectFields(inner, d.servicesHead);
+    renderListEditor(document.getElementById('servicesEditor'), d.services,
+      [{key:'image',label:'Imagem (URL)'},{key:'name',label:'Nome'},{key:'description',label:'Descrição',type:'textarea'},{key:'time',label:'Tempo (ex: 1h30)'},{key:'price',label:'Preço (ex: R$ 130)'},{key:'priceNote',label:'Observação (ex: /sessão)'}],
+      'Adicionar serviço');
+
+  }else if(tabName === 'galeria'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Selo', 'eyebrow', d.galleryHead.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.galleryHead.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.galleryHead.titleEm)}
+      ${fieldRow('Subtítulo', 'sub', d.galleryHead.sub, 'textarea')}
+      <h4 style="margin-top:24px">Fotos da galeria</h4>
+      <div id="galleryEditor"></div>`;
+    bindObjectFields(inner, d.galleryHead);
+    renderListEditor(document.getElementById('galleryEditor'), d.gallery,
+      [{key:'image',label:'Imagem (URL)'}], 'Adicionar foto');
+
+  }else if(tabName === 'estilos'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Selo', 'eyebrow', d.stylesHead.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.stylesHead.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.stylesHead.titleEm)}
+      ${fieldRow('Subtítulo', 'sub', d.stylesHead.sub, 'textarea')}
+      <h4 style="margin-top:24px">Estilos</h4>
+      <div id="stylesEditor"></div>`;
+    bindObjectFields(inner, d.stylesHead);
+    renderListEditor(document.getElementById('stylesEditor'), d.styles,
+      [{key:'image',label:'Imagem (URL)'},{key:'name',label:'Nome do estilo'}], 'Adicionar estilo');
+
+  }else if(tabName === 'processo'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Selo', 'eyebrow', d.processHead.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.processHead.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.processHead.titleEm)}
+      ${fieldRow('Subtítulo', 'sub', d.processHead.sub, 'textarea')}
+      <h4 style="margin-top:24px">Passos (a numeração é automática)</h4>
+      <div id="processEditor"></div>`;
+    bindObjectFields(inner, d.processHead);
+    renderListEditor(document.getElementById('processEditor'), d.process,
+      [{key:'title',label:'Título do passo'},{key:'text',label:'Texto',type:'textarea'}], 'Adicionar passo');
+
+  }else if(tabName === 'depoimentos'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Selo', 'eyebrow', d.testimonialsHead.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.testimonialsHead.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.testimonialsHead.titleEm)}
+      <h4 style="margin-top:24px">Depoimentos</h4>
+      <div id="testimonialsEditor"></div>`;
+    bindObjectFields(inner, d.testimonialsHead);
+    renderListEditor(document.getElementById('testimonialsEditor'), d.testimonials,
+      [{key:'photo',label:'Foto (URL)'},{key:'quote',label:'Depoimento',type:'textarea'},{key:'name',label:'Nome'},{key:'role',label:'Legenda (ex: Cliente desde 2022)'}],
+      'Adicionar depoimento');
+
+  }else if(tabName === 'estatisticas'){
+    inner.innerHTML = `<h4>Estatísticas</h4><div id="statsEditor"></div>`;
+    renderListEditor(document.getElementById('statsEditor'), d.stats,
+      [{key:'value',label:'Número (ex: 3200)'},{key:'label',label:'Legenda'}], 'Adicionar estatística');
+
+  }else if(tabName === 'faq'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Selo', 'eyebrow', d.faqHead.eyebrow)}
+      ${fieldRow('Título — parte 1', 'titlePre', d.faqHead.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.faqHead.titleEm)}
+      <h4 style="margin-top:24px">Perguntas</h4>
+      <div id="faqEditor"></div>`;
+    bindObjectFields(inner, d.faqHead);
+    renderListEditor(document.getElementById('faqEditor'), d.faq,
+      [{key:'q',label:'Pergunta'},{key:'a',label:'Resposta',type:'textarea'}], 'Adicionar pergunta');
+
+  }else if(tabName === 'instagram'){
+    inner.innerHTML = `<h4>Cabeçalho da seção</h4>
+      ${fieldRow('Título — parte 1', 'titlePre', d.instaTitle.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.instaTitle.titleEm)}
+      <p style="font-size:.78rem;color:var(--taupe);margin:-10px 0 20px">O @ exibido usa o campo "Instagram — @ exibido" da aba Contato.</p>
+      <h4>Fotos do feed</h4>
+      <div id="instaEditor"></div>`;
+    bindObjectFields(inner, d.instaTitle);
+    renderListEditor(document.getElementById('instaEditor'), d.instagram,
+      [{key:'image',label:'Imagem (URL)'}], 'Adicionar foto');
+
+  }else if(tabName === 'cta'){
+    inner.innerHTML = `<h4>Chamada final</h4>
+      ${fieldRow('Título — parte 1', 'titlePre', d.cta.titlePre)}
+      ${fieldRow('Título — palavra em destaque', 'titleEm', d.cta.titleEm)}
+      ${fieldRow('Título — parte final', 'titlePost', d.cta.titlePost)}
+      ${fieldRow('Texto', 'text', d.cta.text, 'textarea')}`;
+    bindObjectFields(inner, d.cta);
+
+  }else if(tabName === 'rodape'){
+    inner.innerHTML = `<h4>Rodapé</h4>
+      ${fieldRow('Texto sobre o estúdio', 'about', d.footer.about, 'textarea')}
+      <p style="font-size:.78rem;color:var(--taupe);margin-top:10px">Endereço, WhatsApp, e-mail e redes sociais são editados na aba "Contato".</p>`;
+    bindObjectFields(inner, d.footer);
+  }
+}
+
+/* ---------------------------------------------------------------
+   INICIALIZAÇÃO
+   --------------------------------------------------------------- */
+renderAll(currentContent); // mostra algo imediatamente
+initDataLayer();
+</script>
+</html>

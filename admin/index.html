@@ -2086,6 +2086,7 @@ async function initDataLayer(){
       fb.app = firebase.initializeApp(FIREBASE_CONFIG);
       fb.auth = firebase.auth();
       fb.db = firebase.firestore();
+      await migrateOldContentIfNeeded();
       subscribeContent();
     }catch(err){
       console.error("Falha ao carregar Firebase, usando modo local.", err);
@@ -2093,6 +2094,32 @@ async function initDataLayer(){
     }
   }else{
     loadLocalAndRender();
+  }
+}
+
+/* ---------------------------------------------------------------
+   MIGRAÇÃO: sites que já tinham conteúdo salvo no formato antigo
+   (um único documento "site/content") passam a usar automaticamente
+   a nova estrutura dividida em vários documentos — sem perder nada
+   que já tinha sido personalizado no painel.
+   --------------------------------------------------------------- */
+async function migrateOldContentIfNeeded(){
+  try{
+    const newDocs = await Promise.all(CLOUD_DOC_IDS.map(id => fb.db.collection("site").doc(id).get()));
+    const anyNewExists = newDocs.some(d => d.exists);
+    if(anyNewExists) return; // já está na estrutura nova, não mexe
+
+    const oldDoc = await fb.db.collection("site").doc("content").get();
+    if(oldDoc.exists && oldDoc.data() && oldDoc.data().data){
+      const oldContent = oldDoc.data().data;
+      const merged = JSON.parse(JSON.stringify(defaultContent));
+      Object.keys(oldContent).forEach(key => { merged[key] = oldContent[key]; });
+      const parts = splitContentForCloud(merged);
+      await Promise.all(CLOUD_DOC_IDS.map(id => fb.db.collection("site").doc(id).set(parts[id])));
+      console.log("Conteúdo antigo migrado com sucesso para a nova estrutura do Firestore.");
+    }
+  }catch(err){
+    console.error("Não foi possível checar/migrar o conteúdo antigo:", err);
   }
 }
 

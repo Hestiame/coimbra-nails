@@ -1149,6 +1149,201 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
 .image-hint{ font-size:.72rem; color:#3E7A4C; font-weight:600; }
 .image-compressing{ font-size:.72rem; color:var(--taupe); font-style:italic; }
 
+/* ============================================================
+   21. AGENDAMENTO — modal da cliente + aba Agenda (admin)
+   ============================================================ */
+.booking-overlay{
+  position:fixed; inset:0;
+  background:rgba(23,18,16,.55);
+  backdrop-filter:blur(6px);
+  z-index:4500;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden;
+  transition:opacity .35s var(--ease), visibility .35s;
+  padding:4vw;
+  cursor:auto;
+}
+.booking-overlay *{ cursor:auto; }
+.booking-overlay.active{ opacity:1; visibility:visible; }
+.booking-modal{
+  width:min(420px, 100%);
+  max-height:92vh;
+  overflow-y:auto;
+  background:var(--ivory);
+  border-radius:24px;
+  box-shadow:0 40px 100px -20px rgba(0,0,0,.5);
+}
+.booking-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 26px;
+  background:var(--charcoal); color:var(--white);
+  position:sticky; top:0; z-index:2;
+}
+.booking-head h3{ font-family:var(--font-display); font-size:1.05rem; font-weight:600; }
+.booking-head h3 span{ color:var(--gold-light); font-style:italic; }
+.booking-close{
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(255,255,255,.1); color:var(--white);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .3s, transform .3s;
+}
+.booking-close:hover{ background:rgba(255,255,255,.22); transform:rotate(90deg); }
+.booking-body{ padding:22px 26px 6px; }
+.booking-cal-nav{
+  display:flex; align-items:center; justify-content:space-between;
+  margin:18px 0 14px;
+}
+.booking-cal-nav button{
+  width:34px; height:34px; border-radius:50%;
+  background:var(--blush); color:var(--rose-gold-deep);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .3s, color .3s;
+}
+.booking-cal-nav button:hover:not(:disabled){ background:var(--rose-gold-deep); color:var(--white); }
+.booking-cal-nav button:disabled{ opacity:.3; }
+.booking-cal-nav span{ font-family:var(--font-display); font-weight:600; font-size:1rem; text-transform:capitalize; }
+.booking-weekdays, .booking-grid{
+  display:grid; grid-template-columns:repeat(7, 1fr);
+  gap:6px;
+}
+.booking-weekdays span{
+  text-align:center; font-size:.7rem; color:var(--taupe); font-weight:600;
+  padding-bottom:4px;
+}
+.day-cell{
+  aspect-ratio:1/1;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:10px;
+  font-size:.82rem; font-weight:500;
+  background:var(--white);
+  border:1px solid var(--blush-deep);
+  transition:background .25s, color .25s, transform .2s;
+}
+.day-cell.empty{ background:transparent; border:none; }
+.day-cell.past, .day-cell.blocked, .day-cell.full{
+  opacity:.4; background:var(--ivory-deep); color:var(--taupe); cursor:default;
+}
+.day-cell.available{ cursor:pointer; }
+.day-cell.available:hover{ background:var(--blush); transform:translateY(-2px); }
+.day-cell.selected{ background:var(--rose-gold-deep); color:var(--white); border-color:var(--rose-gold-deep); }
+.booking-legend{
+  display:flex; gap:16px; flex-wrap:wrap;
+  font-size:.72rem; color:var(--taupe); margin:16px 0 4px;
+}
+.booking-legend .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:5px; }
+.booking-legend .dot.free{ background:var(--white); border:1px solid var(--blush-deep); }
+.booking-legend .dot.full{ background:var(--ivory-deep); border:1px solid var(--taupe-light); }
+.booking-legend .dot.selected{ background:var(--rose-gold-deep); }
+
+.booking-slots{
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.slot-btn{
+  padding:9px 14px;
+  border-radius:100px;
+  background:var(--white);
+  border:1px solid var(--blush-deep);
+  font-size:.82rem; font-weight:500;
+  transition:background .25s, color .25s, transform .2s;
+}
+.slot-btn:hover:not(:disabled){ background:var(--blush); transform:translateY(-2px); }
+.slot-btn.selected{ background:var(--rose-gold-deep); color:var(--white); border-color:var(--rose-gold-deep); }
+.slot-btn:disabled{ opacity:.35; text-decoration:line-through; cursor:default; }
+.booking-foot{
+  padding:18px 26px 26px;
+  border-top:1px solid var(--blush-deep);
+  margin-top:10px;
+}
+.booking-selected-info{ font-size:.84rem; color:var(--taupe); margin-bottom:14px; text-align:center; }
+#bookingConfirmBtn{ width:100%; justify-content:center; }
+#bookingConfirmBtn:disabled{ opacity:.45; }
+
+/* Agenda — dentro do painel admin */
+.agenda-toolbar{
+  display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;
+  margin-bottom:20px;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--blush-deep);
+  border-radius:12px;
+}
+.agenda-toolbar .field{ margin:0; }
+.slot-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.slot-chip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 8px 6px 14px;
+  border-radius:100px;
+  background:var(--blush);
+  color:var(--rose-gold-deep);
+  font-size:.8rem; font-weight:600;
+}
+.slot-chip .remove-slot{
+  width:18px; height:18px; border-radius:50%;
+  background:rgba(0,0,0,.08);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.6rem;
+}
+.slot-chip .remove-slot:hover{ background:#B3453A; color:var(--white); }
+.slot-add-row{ display:flex; gap:8px; align-items:center; }
+.slot-add-row input{ padding:8px 10px; border-radius:8px; border:1px solid var(--taupe-light); font-size:.85rem; }
+.slot-add-row button{
+  padding:8px 14px; border-radius:100px; background:var(--rose-gold-deep); color:var(--white); font-size:.78rem; font-weight:600;
+}
+.agenda-cal{ max-width:440px; }
+.agenda-cal .booking-cal-nav{ margin-top:0; }
+.day-cell.admin-day{ flex-direction:column; gap:2px; position:relative; }
+.day-cell.admin-day .d-num{ font-size:.82rem; }
+.day-cell.admin-day .d-dots{ display:flex; gap:3px; position:absolute; bottom:4px; }
+.day-cell.admin-day .d-dots span{ width:5px; height:5px; border-radius:50%; }
+.day-cell.admin-day.today{ border-color:var(--rose-gold-deep); border-width:2px; }
+.dot-pendente{ background:#D99A2B; }
+.dot-confirmado{ background:#3E7A4C; }
+.day-cell.admin-day.day-blocked{ background:repeating-linear-gradient(135deg, var(--ivory-deep), var(--ivory-deep) 4px, #ECE1D8 4px, #ECE1D8 8px); }
+
+.agenda-day-panel{
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px dashed var(--blush-deep);
+}
+.agenda-day-panel h5{ font-family:var(--font-display); font-size:1.05rem; margin-bottom:14px; display:flex; align-items:center; gap:10px; justify-content:space-between; flex-wrap:wrap; }
+.block-toggle-btn{
+  font-size:.76rem; font-weight:600; padding:7px 14px; border-radius:100px;
+  background:var(--blush); color:var(--rose-gold-deep);
+}
+.block-toggle-btn.is-blocked{ background:#B3453A; color:var(--white); }
+.booking-row{
+  display:grid;
+  grid-template-columns:1.1fr .8fr .9fr 1fr 1fr auto;
+  gap:10px; align-items:center;
+  padding:12px;
+  background:var(--white);
+  border:1px solid var(--blush-deep);
+  border-radius:10px;
+  margin-bottom:10px;
+}
+.booking-row select, .booking-row input{
+  padding:8px 10px; border-radius:8px; border:1px solid var(--taupe-light); font-size:.8rem; font-family:var(--font-body);
+}
+.booking-row .del-booking{
+  width:32px; height:32px; border-radius:50%;
+  background:var(--blush); color:var(--rose-gold-deep);
+  display:flex; align-items:center; justify-content:center;
+}
+.booking-row .del-booking:hover{ background:#B3453A; color:var(--white); }
+.booking-empty-msg{ font-size:.84rem; color:var(--taupe); font-style:italic; }
+.agenda-add-form{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  margin-top:14px; padding:14px; background:var(--ivory-deep); border-radius:10px;
+}
+.agenda-add-form .field{ margin-bottom:0; }
+.agenda-add-form .full{ grid-column:1 / -1; }
+
+@media (max-width:640px){
+  .booking-row{ grid-template-columns:1fr 1fr; }
+  .booking-row .del-booking{ grid-column:2; justify-self:end; }
+  .agenda-add-form{ grid-template-columns:1fr; }
+}
+
 .admin-overlay{
   position:fixed; inset:0;
   background:rgba(23,18,16,.55);
@@ -1342,7 +1537,7 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
       <li><a href="#sobre">Sobre</a></li>
       <li><a href="#avaliacoes">Avaliações</a></li>
       <li><a href="#contato">Contato</a></li>
-      <li><a href="#contato" class="nav-cta">Agendar</a></li>
+      <li><a href="#" class="nav-cta" id="navCtaBtn">Agendar</a></li>
     </ul>
     <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
   </div>
@@ -1360,7 +1555,7 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
     <h1 class="reveal" id="heroTitle"></h1>
     <p class="reveal" id="heroSubtitle"></p>
     <div class="hero-actions reveal">
-      <a href="#contato" class="btn btn-primary"><i class="fa-regular fa-calendar"></i> <span id="heroBtnPrimary"></span></a>
+      <a href="#" class="btn btn-primary" id="heroBookBtn"><i class="fa-regular fa-calendar"></i> <span id="heroBtnPrimary"></span></a>
       <a href="#galeria" class="btn btn-ghost"><i class="fa-regular fa-images"></i> <span id="heroBtnGhost"></span></a>
     </div>
   </div>
@@ -1424,6 +1619,41 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
     <div class="masonry reveal" id="masonry"></div>
   </div>
 </section>
+
+<div class="booking-overlay" id="bookingOverlay">
+  <div class="booking-modal">
+    <div class="booking-head">
+      <h3>Agendar <span id="bookingServiceLabel"></span></h3>
+      <div class="booking-close" id="bookingClose"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="booking-body">
+      <div class="field" id="bookingServiceField">
+        <label>Serviço</label>
+        <select id="bookingServiceSelect"></select>
+      </div>
+      <div class="booking-cal-nav">
+        <button id="bookingPrevMonth" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="bookingMonthLabel"></span>
+        <button id="bookingNextMonth" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="booking-weekdays"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+      <div class="booking-grid" id="bookingGrid"></div>
+      <div class="booking-legend">
+        <span><i class="dot free"></i> Disponível</span>
+        <span><i class="dot full"></i> Indisponível</span>
+        <span><i class="dot selected"></i> Selecionado</span>
+      </div>
+      <div id="bookingSlotsWrap" style="display:none">
+        <label style="display:block; font-size:.76rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--taupe); margin:18px 0 10px;">Horário</label>
+        <div class="booking-slots" id="bookingSlots"></div>
+      </div>
+    </div>
+    <div class="booking-foot">
+      <div class="booking-selected-info" id="bookingSelectedInfo">Escolha um dia disponível.</div>
+      <button class="btn btn-primary" id="bookingConfirmBtn" disabled><i class="fa-brands fa-whatsapp"></i> Ir para o WhatsApp</button>
+    </div>
+  </div>
+</div>
 
 <div class="lightbox" id="lightbox">
   <div class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></div>
@@ -1516,7 +1746,7 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
   <div class="cta-content reveal">
     <h2 id="ctaTitle"></h2>
     <p id="ctaText"></p>
-    <a href="#" target="_blank" class="btn btn-primary" id="ctaBtn"><i class="fa-brands fa-whatsapp"></i> Agendar Agora</a>
+    <a href="#" class="btn btn-primary" id="ctaBtn"><i class="fa-brands fa-whatsapp"></i> Agendar Agora</a>
   </div>
 </section>
 
@@ -1616,6 +1846,7 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
           <div class="admin-tab" data-tab="estatisticas"><i class="fa-solid fa-chart-simple"></i> Estatísticas</div>
           <div class="admin-tab" data-tab="faq"><i class="fa-regular fa-circle-question"></i> FAQ</div>
           <div class="admin-tab" data-tab="instagram"><i class="fa-brands fa-instagram"></i> Instagram</div>
+          <div class="admin-tab" data-tab="agenda"><i class="fa-solid fa-calendar-check"></i> Agenda</div>
           <div class="admin-tab" data-tab="cta"><i class="fa-solid fa-bullhorn"></i> Chamada final</div>
           <div class="admin-tab" data-tab="rodape"><i class="fa-solid fa-shoe-prints"></i> Rodapé</div>
         </div>
@@ -1653,7 +1884,9 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
       substituindo os valores de exemplo.
    7. Em Firestore Database > Regras, cole (o conteúdo é salvo em
       vários documentos dentro da coleção "site" — um por seção —
-      para as fotos anexadas caberem no limite de 1MB por documento):
+      para as fotos anexadas caberem no limite de 1MB por documento;
+      a coleção "agendamentos" guarda os pedidos feitos pelas
+      clientes no calendário do site):
 
         rules_version = '2';
         service cloud.firestore {
@@ -1661,6 +1894,11 @@ footer .flinks a:hover{ color:var(--gold-light); padding-left:4px; }
             match /site/{document} {
               allow read: if true;
               allow write: if request.auth != null;
+            }
+            match /agendamentos/{bookingId} {
+              allow read: if true;
+              allow create: if true;
+              allow update, delete: if request.auth != null;
             }
           }
         }
@@ -1992,7 +2230,7 @@ function renderAll(c){
       <div class="service-body">
         <h3>${esc(s.name)}</h3>
         <p>${esc(s.description)}</p>
-        <div class="service-foot"><div class="service-price">${esc(s.price)} <span>${esc(s.priceNote)}</span></div><div class="service-link"><i class="fa-solid fa-arrow-up-right"></i></div></div>
+        <div class="service-foot"><div class="service-price">${esc(s.price)} <span>${esc(s.priceNote)}</span></div><div class="service-link" data-book-service="${esc(s.name)}" title="Agendar ${esc(s.name)}"><i class="fa-solid fa-calendar-plus"></i></div></div>
       </div>
     </div>
   `).join(''));
@@ -2081,6 +2319,11 @@ function renderAll(c){
    COMPORTAMENTOS INTERATIVOS (religados a cada renderização)
    --------------------------------------------------------------- */
 function attachBehaviors(){
+  // Botão "Agendar" de cada card de serviço (recriado a cada render)
+  document.querySelectorAll('.service-link[data-book-service]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openBookingModal(btn.getAttribute('data-book-service')));
+  });
+
   // Reveal on scroll
   const revealEls = document.querySelectorAll('.reveal:not(.in), .reveal-scale:not(.in), .flourish:not(.in)');
   const revealObserver = new IntersectionObserver((entries)=>{
@@ -2222,6 +2465,257 @@ document.getElementById('toTop').addEventListener('click', ()=>{
 });
 
 /* ================================================================
+   AGENDAMENTO — camada de dados (nuvem ou local)
+   ================================================================ */
+const BOOKINGS_LOCAL_KEY = "coimbra_nails_bookings_v1";
+const AGENDA_SETTINGS_LOCAL_KEY = "coimbra_nails_agenda_settings_v1";
+let bookingSettings = { timeSlots: ["09:00","10:30","12:00","14:00","15:30","17:00"], blockedDates: [] };
+
+function loadLocalBookings(){ try{ return JSON.parse(localStorage.getItem(BOOKINGS_LOCAL_KEY)) || []; }catch(e){ return []; } }
+function saveLocalBookings(arr){ localStorage.setItem(BOOKINGS_LOCAL_KEY, JSON.stringify(arr)); }
+function loadLocalAgendaSettings(){ try{ return JSON.parse(localStorage.getItem(AGENDA_SETTINGS_LOCAL_KEY)) || { timeSlots: ["09:00","10:30","12:00","14:00","15:30","17:00"], blockedDates:[] }; }catch(e){ return { timeSlots: ["09:00","10:30","12:00","14:00","15:30","17:00"], blockedDates:[] }; } }
+function saveLocalAgendaSettings(s){ localStorage.setItem(AGENDA_SETTINGS_LOCAL_KEY, JSON.stringify(s)); }
+
+async function fetchAgendaSettings(){
+  if(CLOUD_MODE && fb.db){
+    try{
+      const doc = await fb.db.collection('site').doc('agenda_settings').get();
+      bookingSettings = doc.exists ? doc.data() : { timeSlots: ["09:00","10:30","12:00","14:00","15:30","17:00"], blockedDates:[] };
+    }catch(e){ bookingSettings = { timeSlots: ["09:00","10:30","12:00","14:00","15:30","17:00"], blockedDates:[] }; }
+  }else{
+    bookingSettings = loadLocalAgendaSettings();
+  }
+}
+async function saveAgendaSettings(s){
+  bookingSettings = s;
+  if(CLOUD_MODE && fb.db){ await fb.db.collection('site').doc('agenda_settings').set(s); }
+  else{ saveLocalAgendaSettings(s); }
+}
+
+async function fetchBookingsRange(startISO, endISO){
+  if(CLOUD_MODE && fb.db){
+    const snap = await fb.db.collection('agendamentos')
+      .where('date','>=',startISO).where('date','<=',endISO).get();
+    return snap.docs.map(d => ({ id:d.id, ...d.data() }));
+  }else{
+    return loadLocalBookings().filter(b => b.date >= startISO && b.date <= endISO);
+  }
+}
+
+async function createBookingRequest(booking){
+  if(CLOUD_MODE && fb.db){
+    const ref = await fb.db.collection('agendamentos').add(booking);
+    return ref.id;
+  }else{
+    const arr = loadLocalBookings();
+    const id = 'local_' + Date.now();
+    arr.push({ id, ...booking });
+    saveLocalBookings(arr);
+    return id;
+  }
+}
+async function updateBookingDoc(id, patch){
+  if(CLOUD_MODE && fb.db){
+    await fb.db.collection('agendamentos').doc(id).update(patch);
+  }else{
+    const arr = loadLocalBookings();
+    const idx = arr.findIndex(b => b.id === id);
+    if(idx > -1){ arr[idx] = { ...arr[idx], ...patch }; saveLocalBookings(arr); }
+  }
+}
+async function deleteBookingDoc(id){
+  if(CLOUD_MODE && fb.db){
+    await fb.db.collection('agendamentos').doc(id).delete();
+  }else{
+    saveLocalBookings(loadLocalBookings().filter(b => b.id !== id));
+  }
+}
+
+/* ---- helpers de calendário (compartilhados: modal da cliente + agenda admin) ---- */
+const MONTH_LABELS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function pad2(n){ return String(n).padStart(2,'0'); }
+function isoDate(y,m,d){ return `${y}-${pad2(m+1)}-${pad2(d)}`; }
+function todayISO(){ const t = new Date(); return isoDate(t.getFullYear(), t.getMonth(), t.getDate()); }
+function buildMonthGrid(year, month){
+  const startWeekday = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const cells = [];
+  for(let i=0;i<startWeekday;i++) cells.push(null);
+  for(let d=1; d<=daysInMonth; d++) cells.push(d);
+  while(cells.length % 7 !== 0) cells.push(null);
+  return cells;
+}
+function formatDateBR(iso){
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+/* ================================================================
+   MODAL DE AGENDAMENTO — cliente
+   ================================================================ */
+const bookingOverlay = document.getElementById('bookingOverlay');
+const bookingClose = document.getElementById('bookingClose');
+const bookingServiceSelect = document.getElementById('bookingServiceSelect');
+const bookingServiceLabel = document.getElementById('bookingServiceLabel');
+const bookingMonthLabel = document.getElementById('bookingMonthLabel');
+const bookingGrid = document.getElementById('bookingGrid');
+const bookingPrevMonth = document.getElementById('bookingPrevMonth');
+const bookingNextMonth = document.getElementById('bookingNextMonth');
+const bookingSelectedInfo = document.getElementById('bookingSelectedInfo');
+const bookingConfirmBtn = document.getElementById('bookingConfirmBtn');
+const bookingSlotsWrap = document.getElementById('bookingSlotsWrap');
+const bookingSlots = document.getElementById('bookingSlots');
+
+let bookingView = { year: new Date().getFullYear(), month: new Date().getMonth(), selectedDate: null, selectedTime: null, monthBookings: [] };
+
+async function openBookingModal(presetServiceName){
+  bookingOverlay.classList.add('active');
+  bookingServiceSelect.innerHTML = currentContent.services.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
+  if(presetServiceName){
+    bookingServiceSelect.value = presetServiceName;
+    bookingServiceLabel.textContent = presetServiceName;
+  }else{
+    bookingServiceLabel.textContent = '';
+  }
+  const now = new Date();
+  bookingView.year = now.getFullYear();
+  bookingView.month = now.getMonth();
+  bookingView.selectedDate = null;
+  bookingView.selectedTime = null;
+  await renderBookingCalendar();
+}
+function closeBookingModal(){ bookingOverlay.classList.remove('active'); }
+
+bookingClose.addEventListener('click', closeBookingModal);
+bookingOverlay.addEventListener('click', (e)=>{ if(e.target === bookingOverlay) closeBookingModal(); });
+bookingServiceSelect.addEventListener('change', ()=>{ bookingServiceLabel.textContent = bookingServiceSelect.value; });
+
+bookingPrevMonth.addEventListener('click', async ()=>{
+  bookingView.month--; if(bookingView.month < 0){ bookingView.month = 11; bookingView.year--; }
+  bookingView.selectedDate = null;
+  bookingView.selectedTime = null;
+  await renderBookingCalendar();
+});
+bookingNextMonth.addEventListener('click', async ()=>{
+  bookingView.month++; if(bookingView.month > 11){ bookingView.month = 0; bookingView.year++; }
+  bookingView.selectedDate = null;
+  bookingView.selectedTime = null;
+  await renderBookingCalendar();
+});
+
+async function renderBookingCalendar(){
+  const { year, month } = bookingView;
+  bookingMonthLabel.textContent = `${MONTH_LABELS[month]} de ${year}`;
+  const now = new Date();
+  const isCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
+  bookingPrevMonth.disabled = isCurrentMonth || (year < now.getFullYear()) || (year === now.getFullYear() && month <= now.getMonth());
+
+  const monthStart = isoDate(year, month, 1);
+  const monthEnd = isoDate(year, month, new Date(year, month+1, 0).getDate());
+  await fetchAgendaSettings();
+  let bookings = [];
+  try{ bookings = await fetchBookingsRange(monthStart, monthEnd); }catch(e){ bookings = []; }
+  bookingView.monthBookings = bookings.filter(b => b.status !== 'cancelado');
+
+  const cells = buildMonthGrid(year, month);
+  const today = todayISO();
+  const slots = bookingSettings.timeSlots || [];
+  const blocked = bookingSettings.blockedDates || [];
+
+  bookingGrid.innerHTML = cells.map(d => {
+    if(d === null) return `<div class="day-cell empty"></div>`;
+    const iso = isoDate(year, month, d);
+    const takenTimes = bookingView.monthBookings.filter(b => b.date === iso).map(b => b.time).filter(Boolean);
+    const isPast = iso < today;
+    const isBlocked = blocked.indexOf(iso) > -1;
+    const isFull = slots.length > 0 && takenTimes.length >= slots.length;
+    let cls = 'day-cell';
+    if(isPast) cls += ' past';
+    else if(isBlocked) cls += ' blocked';
+    else if(isFull) cls += ' full';
+    else cls += ' available';
+    if(bookingView.selectedDate === iso) cls += ' selected';
+    return `<div class="${cls}" data-date="${iso}">${d}</div>`;
+  }).join('');
+
+  bookingGrid.querySelectorAll('.day-cell.available').forEach(cell=>{
+    cell.addEventListener('click', ()=>{
+      bookingView.selectedDate = cell.getAttribute('data-date');
+      bookingView.selectedTime = null;
+      renderBookingCalendar();
+    });
+  });
+
+  renderBookingSlots();
+}
+
+function renderBookingSlots(){
+  const slots = bookingSettings.timeSlots || [];
+  if(!bookingView.selectedDate || slots.length === 0){
+    bookingSlotsWrap.style.display = 'none';
+    if(bookingView.selectedDate){
+      bookingSelectedInfo.textContent = `Dia selecionado: ${formatDateBR(bookingView.selectedDate)}`;
+      bookingConfirmBtn.disabled = false;
+    }else{
+      bookingSelectedInfo.textContent = 'Escolha um dia disponível.';
+      bookingConfirmBtn.disabled = true;
+    }
+    return;
+  }
+  bookingSlotsWrap.style.display = 'block';
+  const takenTimes = bookingView.monthBookings.filter(b => b.date === bookingView.selectedDate).map(b => b.time).filter(Boolean);
+  bookingSlots.innerHTML = slots.map(t => {
+    const isTaken = takenTimes.indexOf(t) > -1;
+    const isSelected = bookingView.selectedTime === t;
+    return `<button type="button" class="slot-btn${isSelected ? ' selected' : ''}" data-time="${t}" ${isTaken ? 'disabled' : ''}>${t}</button>`;
+  }).join('');
+  bookingSlots.querySelectorAll('.slot-btn:not(:disabled)').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      bookingView.selectedTime = btn.getAttribute('data-time');
+      renderBookingSlots();
+    });
+  });
+
+  if(bookingView.selectedTime){
+    bookingSelectedInfo.textContent = `Dia selecionado: ${formatDateBR(bookingView.selectedDate)} às ${bookingView.selectedTime}`;
+    bookingConfirmBtn.disabled = false;
+  }else{
+    bookingSelectedInfo.textContent = `Dia selecionado: ${formatDateBR(bookingView.selectedDate)} — escolha um horário`;
+    bookingConfirmBtn.disabled = true;
+  }
+}
+
+bookingConfirmBtn.addEventListener('click', async ()=>{
+  if(!bookingView.selectedDate) return;
+  const slots = bookingSettings.timeSlots || [];
+  if(slots.length > 0 && !bookingView.selectedTime) return;
+  const service = bookingServiceSelect.value;
+  const date = bookingView.selectedDate;
+  const time = bookingView.selectedTime || '';
+  bookingConfirmBtn.disabled = true;
+  bookingConfirmBtn.textContent = 'Enviando...';
+  try{
+    await createBookingRequest({ service, date, time, status: 'pendente', clientName: '', clientPhone: '', notes: '' });
+    const msg = time
+      ? `Olá! Gostaria de agendar *${service}* para o dia *${formatDateBR(date)}* às *${time}*.`
+      : `Olá! Gostaria de agendar *${service}* para o dia *${formatDateBR(date)}*.`;
+    window.open(`https://wa.me/${currentContent.contact.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    closeBookingModal();
+  }catch(err){
+    console.error(err);
+    bookingSelectedInfo.textContent = 'Não foi possível registrar o pedido. Tente novamente.';
+  }
+  bookingConfirmBtn.disabled = false;
+  bookingConfirmBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Ir para o WhatsApp';
+});
+
+/* Botões fixos que abrem o modal (ligados 1x, fora do attachBehaviors) */
+['heroBookBtn','navCtaBtn','ctaBtn'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', (e)=>{ e.preventDefault(); openBookingModal(null); });
+});
+
+/* ================================================================
    PAINEL ADMINISTRATIVO
    ================================================================ */
 const adminOverlay = document.getElementById('adminOverlay');
@@ -2317,7 +2811,12 @@ adminTabs.querySelectorAll('.admin-tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
     adminTabs.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    buildTab(tab.getAttribute('data-tab'));
+    const name = tab.getAttribute('data-tab');
+    buildTab(name);
+    const isAgenda = name === 'agenda';
+    saveBtn.style.display = isAgenda ? 'none' : '';
+    adminMsg.textContent = isAgenda ? 'As alterações na agenda são salvas automaticamente.' : '';
+    adminMsg.classList.remove('ok');
   });
 });
 
@@ -2669,7 +3168,223 @@ function buildTab(tabName){
       ${fieldRow('Texto sobre o estúdio', 'about', d.footer.about, 'textarea')}
       <p style="font-size:.78rem;color:var(--taupe);margin-top:10px">Endereço, WhatsApp, e-mail e redes sociais são editados na aba "Contato".</p>`;
     bindObjectFields(inner, d.footer);
+
+  }else if(tabName === 'agenda'){
+    inner.innerHTML = `<h4>Agenda de agendamentos</h4>
+      <div class="admin-banner" style="background:#E7F1E9;color:#2C5C38;">
+        <i class="fa-solid fa-circle-info"></i> Toda ação aqui (confirmar, cancelar, bloquear dia, adicionar, horários) já salva na hora — não precisa clicar em "Salvar alterações".
+      </div>
+      <div class="agenda-toolbar">
+        <label style="display:block; font-size:.76rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--taupe); margin-bottom:4px;">Horários disponíveis (todo dia aberto)</label>
+        <div class="slot-chips" id="agendaSlotChips"></div>
+        <div class="slot-add-row">
+          <input type="time" id="agendaNewSlot">
+          <button type="button" id="agendaAddSlot"><i class="fa-solid fa-plus"></i> Adicionar horário</button>
+        </div>
+        <span style="font-size:.78rem;color:var(--taupe);margin-top:8px;display:block;">O dia aparece "lotado" para a cliente quando todos os horários dele já estiverem ocupados.</span>
+      </div>
+      <div class="agenda-cal">
+        <div class="booking-cal-nav">
+          <button type="button" id="agendaPrevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+          <span id="agendaMonthLabel"></span>
+          <button type="button" id="agendaNextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="booking-weekdays"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+        <div class="booking-grid" id="agendaGrid"></div>
+      </div>
+      <div class="agenda-day-panel" id="agendaDayPanel"></div>`;
+
+    function renderSlotChips(){
+      const chipsWrap = document.getElementById('agendaSlotChips');
+      const slots = (bookingSettings.timeSlots || []).slice().sort();
+      chipsWrap.innerHTML = slots.length
+        ? slots.map(t => `<span class="slot-chip">${t}<span class="remove-slot" data-slot="${t}"><i class="fa-solid fa-xmark"></i></span></span>`).join('')
+        : '<span style="font-size:.8rem;color:var(--taupe)">Nenhum horário cadastrado ainda.</span>';
+      chipsWrap.querySelectorAll('.remove-slot').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const t = btn.getAttribute('data-slot');
+          await saveAgendaSettings({ ...bookingSettings, timeSlots: (bookingSettings.timeSlots || []).filter(x => x !== t) });
+          renderSlotChips();
+          renderAgendaCalendar();
+        });
+      });
+    }
+
+    document.getElementById('agendaAddSlot').addEventListener('click', async ()=>{
+      const input = document.getElementById('agendaNewSlot');
+      const val = input.value;
+      if(!val) return;
+      const current = bookingSettings.timeSlots || [];
+      if(current.indexOf(val) === -1){
+        await saveAgendaSettings({ ...bookingSettings, timeSlots: [...current, val] });
+        renderSlotChips();
+        renderAgendaCalendar();
+      }
+      input.value = '';
+    });
+
+    document.getElementById('agendaPrevMonth').addEventListener('click', ()=>{
+      agendaView.month--; if(agendaView.month < 0){ agendaView.month = 11; agendaView.year--; }
+      agendaView.selectedDate = null;
+      renderAgendaCalendar();
+    });
+    document.getElementById('agendaNextMonth').addEventListener('click', ()=>{
+      agendaView.month++; if(agendaView.month > 11){ agendaView.month = 0; agendaView.year++; }
+      agendaView.selectedDate = null;
+      renderAgendaCalendar();
+    });
+    fetchAgendaSettings().then(()=>{
+      renderSlotChips();
+      renderAgendaCalendar();
+    });
   }
+}
+
+/* ================================================================
+   AGENDA — painel administrativo
+   ================================================================ */
+let agendaView = { year: new Date().getFullYear(), month: new Date().getMonth(), selectedDate: null, monthBookings: [] };
+
+async function renderAgendaCalendar(){
+  const grid = document.getElementById('agendaGrid');
+  const label = document.getElementById('agendaMonthLabel');
+  if(!grid || !label) return;
+  const { year, month } = agendaView;
+  label.textContent = `${MONTH_LABELS[month]} de ${year}`;
+
+  const monthStart = isoDate(year, month, 1);
+  const monthEnd = isoDate(year, month, new Date(year, month+1, 0).getDate());
+  let bookings = [];
+  try{ bookings = await fetchBookingsRange(monthStart, monthEnd); }catch(e){ bookings = []; }
+  agendaView.monthBookings = bookings;
+
+  const cells = buildMonthGrid(year, month);
+  const today = todayISO();
+  const blocked = bookingSettings.blockedDates || [];
+
+  grid.innerHTML = cells.map(d=>{
+    if(d === null) return `<div class="day-cell empty"></div>`;
+    const iso = isoDate(year, month, d);
+    const dayBookings = bookings.filter(b => b.date === iso && b.status !== 'cancelado');
+    const pendCount = dayBookings.filter(b => b.status === 'pendente').length;
+    const confCount = dayBookings.filter(b => b.status === 'confirmado').length;
+    const isBlocked = blocked.indexOf(iso) > -1;
+    let cls = 'day-cell admin-day';
+    if(iso === today) cls += ' today';
+    if(isBlocked) cls += ' day-blocked';
+    if(agendaView.selectedDate === iso) cls += ' selected';
+    let dots = '';
+    if(pendCount) dots += `<span class="dot-pendente" title="${pendCount} pendente(s)"></span>`;
+    if(confCount) dots += `<span class="dot-confirmado" title="${confCount} confirmado(s)"></span>`;
+    return `<div class="${cls}" data-date="${iso}"><span class="d-num">${d}</span><div class="d-dots">${dots}</div></div>`;
+  }).join('');
+
+  grid.querySelectorAll('.day-cell.admin-day').forEach(cell=>{
+    cell.addEventListener('click', ()=>{
+      agendaView.selectedDate = cell.getAttribute('data-date');
+      renderAgendaCalendar();
+      renderAgendaDayPanel();
+    });
+  });
+
+  if(agendaView.selectedDate) renderAgendaDayPanel();
+}
+
+function renderAgendaDayPanel(){
+  const panel = document.getElementById('agendaDayPanel');
+  if(!panel) return;
+  const date = agendaView.selectedDate;
+  if(!date){ panel.innerHTML = '<p class="booking-empty-msg">Clique em um dia no calendário para ver ou adicionar agendamentos.</p>'; return; }
+
+  const isBlocked = (bookingSettings.blockedDates || []).indexOf(date) > -1;
+  const dayBookings = agendaView.monthBookings.filter(b => b.date === date);
+  const serviceOptions = currentContent.services.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
+  const slotOptions = (bookingSettings.timeSlots || []).slice().sort().map(t => `<option value="${t}">${t}</option>`).join('');
+
+  panel.innerHTML = `
+    <h5>
+      <span>${formatDateBR(date)}</span>
+      <button type="button" class="block-toggle-btn ${isBlocked ? 'is-blocked' : ''}" id="toggleBlockDay">
+        <i class="fa-solid fa-${isBlocked ? 'lock-open' : 'lock'}"></i> ${isBlocked ? 'Desbloquear este dia' : 'Bloquear este dia'}
+      </button>
+    </h5>
+    <div id="agendaBookingsList">
+      ${dayBookings.length ? dayBookings.map(b => bookingRowHtml(b)).join('') : '<p class="booking-empty-msg">Nenhum agendamento neste dia ainda.</p>'}
+    </div>
+    <button type="button" class="admin-add-btn" id="showAddBookingForm"><i class="fa-solid fa-plus"></i> Adicionar agendamento manual</button>
+    <div class="agenda-add-form" id="agendaAddForm" style="display:none">
+      <div class="field"><label>Serviço</label><select id="newBookingService">${serviceOptions}</select></div>
+      <div class="field"><label>Horário</label><select id="newBookingTime"><option value="">—</option>${slotOptions}</select></div>
+      <div class="field"><label>Status</label>
+        <select id="newBookingStatus">
+          <option value="confirmado">Confirmado</option>
+          <option value="pendente">Pendente</option>
+        </select>
+      </div>
+      <div class="field"><label>Nome da cliente</label><input type="text" id="newBookingName" placeholder="Opcional"></div>
+      <div class="field full"><label>WhatsApp</label><input type="text" id="newBookingPhone" placeholder="Opcional"></div>
+      <div class="field full"><button type="button" class="btn btn-primary" style="width:100%;justify-content:center" id="saveNewBooking">Salvar agendamento</button></div>
+    </div>
+  `;
+
+  document.getElementById('toggleBlockDay').addEventListener('click', async ()=>{
+    const list = bookingSettings.blockedDates || [];
+    const next = isBlocked ? list.filter(x => x !== date) : [...list, date];
+    await saveAgendaSettings({ ...bookingSettings, blockedDates: next });
+    renderAgendaCalendar();
+  });
+
+  panel.querySelectorAll('.booking-row').forEach(row => bindBookingRow(row));
+
+  const showFormBtn = document.getElementById('showAddBookingForm');
+  const form = document.getElementById('agendaAddForm');
+  showFormBtn.addEventListener('click', ()=>{ form.style.display = form.style.display === 'none' ? 'grid' : 'none'; });
+  document.getElementById('saveNewBooking').addEventListener('click', async ()=>{
+    const btn = document.getElementById('saveNewBooking');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    await createBookingRequest({
+      service: document.getElementById('newBookingService').value,
+      date: date,
+      time: document.getElementById('newBookingTime').value,
+      status: document.getElementById('newBookingStatus').value,
+      clientName: document.getElementById('newBookingName').value,
+      clientPhone: document.getElementById('newBookingPhone').value,
+      notes: ''
+    });
+    await renderAgendaCalendar();
+  });
+}
+
+function bookingRowHtml(b){
+  const services = currentContent.services.map(s => `<option value="${esc(s.name)}" ${s.name===b.service?'selected':''}>${esc(s.name)}</option>`).join('');
+  const slots = (bookingSettings.timeSlots || []).slice().sort();
+  const timeOptions = `<option value="">—</option>` + slots.map(t => `<option value="${t}" ${b.time===t?'selected':''}>${t}</option>`).join('');
+  return `<div class="booking-row" data-id="${b.id}">
+    <select class="bk-service">${services}</select>
+    <select class="bk-time">${timeOptions}</select>
+    <select class="bk-status">
+      <option value="pendente" ${b.status==='pendente'?'selected':''}>Pendente</option>
+      <option value="confirmado" ${b.status==='confirmado'?'selected':''}>Confirmado</option>
+      <option value="cancelado" ${b.status==='cancelado'?'selected':''}>Cancelado</option>
+    </select>
+    <input type="text" class="bk-name" placeholder="Nome da cliente" value="${esc(b.clientName)}">
+    <input type="text" class="bk-phone" placeholder="WhatsApp" value="${esc(b.clientPhone)}">
+    <div class="del-booking" title="Excluir"><i class="fa-solid fa-trash"></i></div>
+  </div>`;
+}
+
+function bindBookingRow(row){
+  const id = row.getAttribute('data-id');
+  row.querySelector('.bk-service').addEventListener('change', (e)=> updateBookingDoc(id, { service: e.target.value }));
+  row.querySelector('.bk-time').addEventListener('change', async (e)=>{ await updateBookingDoc(id, { time: e.target.value }); renderAgendaCalendar(); });
+  row.querySelector('.bk-status').addEventListener('change', async (e)=>{ await updateBookingDoc(id, { status: e.target.value }); renderAgendaCalendar(); });
+  row.querySelector('.bk-name').addEventListener('blur', (e)=> updateBookingDoc(id, { clientName: e.target.value }));
+  row.querySelector('.bk-phone').addEventListener('blur', (e)=> updateBookingDoc(id, { clientPhone: e.target.value }));
+  row.querySelector('.del-booking').addEventListener('click', async ()=>{
+    if(!confirm('Excluir este agendamento?')) return;
+    await deleteBookingDoc(id);
+    await renderAgendaCalendar();
+  });
 }
 
 /* ---------------------------------------------------------------
